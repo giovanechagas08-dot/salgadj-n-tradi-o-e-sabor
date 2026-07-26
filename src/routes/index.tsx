@@ -344,7 +344,7 @@ function SectionLink({
 }) {
   return (
     <Link
-      to={href}
+      to={href as never}
       className={cn(
         "group inline-flex items-center gap-2 text-sm font-semibold",
         invert ? "text-brand-yellow" : "text-brand-purple",
