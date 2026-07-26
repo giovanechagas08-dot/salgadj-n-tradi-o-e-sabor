@@ -15,9 +15,13 @@ import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
 import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
+import { Route as AdminPrecosRouteImport } from './routes/admin/precos'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
 const QuemSomosRoute = QuemSomosRouteImport.update({
   id: '/quem-somos',
@@ -49,6 +53,11 @@ const DesignSystemRoute = DesignSystemRouteImport.update({
   path: '/design-system',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -59,21 +68,40 @@ const ParceirosIndexRoute = ParceirosIndexRouteImport.update({
   path: '/parceiros/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
   id: '/parceiros/$slug',
   path: '/parceiros/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPrecosRoute = AdminPrecosRouteImport.update({
+  id: '/precos',
+  path: '/precos',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/precos': typeof AdminPrecosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRoutesByTo {
@@ -84,32 +112,43 @@ export interface FileRoutesByTo {
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/precos': typeof AdminPrecosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/parceiros': typeof ParceirosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/precos': typeof AdminPrecosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/design-system'
     | '/diferenciais'
     | '/experiencia'
     | '/galeria'
     | '/historia'
     | '/quem-somos'
+    | '/admin/login'
+    | '/admin/precos'
     | '/parceiros/$slug'
+    | '/admin/'
     | '/parceiros/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -120,23 +159,31 @@ export interface FileRouteTypes {
     | '/galeria'
     | '/historia'
     | '/quem-somos'
+    | '/admin/login'
+    | '/admin/precos'
     | '/parceiros/$slug'
+    | '/admin'
     | '/parceiros'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/design-system'
     | '/diferenciais'
     | '/experiencia'
     | '/galeria'
     | '/historia'
     | '/quem-somos'
+    | '/admin/login'
+    | '/admin/precos'
     | '/parceiros/$slug'
+    | '/admin/'
     | '/parceiros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   DesignSystemRoute: typeof DesignSystemRoute
   DiferenciaisRoute: typeof DiferenciaisRoute
   ExperienciaRoute: typeof ExperienciaRoute
@@ -191,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -205,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParceirosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/parceiros/$slug': {
       id: '/parceiros/$slug'
       path: '/parceiros/$slug'
@@ -212,11 +273,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParceirosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/precos': {
+      id: '/admin/precos'
+      path: '/precos'
+      fullPath: '/admin/precos'
+      preLoaderRoute: typeof AdminPrecosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminPrecosRoute: typeof AdminPrecosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminPrecosRoute: AdminPrecosRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   DesignSystemRoute: DesignSystemRoute,
   DiferenciaisRoute: DiferenciaisRoute,
   ExperienciaRoute: ExperienciaRoute,
