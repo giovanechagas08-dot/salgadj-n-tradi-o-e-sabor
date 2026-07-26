@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HistoriaRouteImport } from './routes/historia'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
 import { Route as IndexRouteImport } from './routes/index'
 
+const HistoriaRoute = HistoriaRouteImport.update({
+  id: '/historia',
+  path: '/historia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExperienciaRoute = ExperienciaRouteImport.update({
   id: '/experiencia',
   path: '/experiencia',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/experiencia': typeof ExperienciaRoute
+  '/historia': typeof HistoriaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/experiencia': typeof ExperienciaRoute
+  '/historia': typeof HistoriaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/experiencia': typeof ExperienciaRoute
+  '/historia': typeof HistoriaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/experiencia'
+  fullPaths: '/' | '/experiencia' | '/historia'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/experiencia'
-  id: '__root__' | '/' | '/experiencia'
+  to: '/' | '/experiencia' | '/historia'
+  id: '__root__' | '/' | '/experiencia' | '/historia'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExperienciaRoute: typeof ExperienciaRoute
+  HistoriaRoute: typeof HistoriaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/historia': {
+      id: '/historia'
+      path: '/historia'
+      fullPath: '/historia'
+      preLoaderRoute: typeof HistoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/experiencia': {
       id: '/experiencia'
       path: '/experiencia'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExperienciaRoute: ExperienciaRoute,
+  HistoriaRoute: HistoriaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
