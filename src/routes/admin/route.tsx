@@ -34,9 +34,10 @@ export const Route = createFileRoute("/admin")({
 
 const NAV = [
   { to: "/admin/precos", label: "Preços", icon: Tags, ready: true },
-  { to: "/admin/precos", label: "Pedidos", icon: ClipboardList, ready: false },
+  { to: "/admin/pedidos", label: "Pedidos", icon: ClipboardList, ready: true },
   { to: "/admin/precos", label: "Produtos", icon: Package, ready: false },
 ];
+
 
 function AdminLayout() {
   const { user, canEdit, isLogin } = Route.useRouteContext();

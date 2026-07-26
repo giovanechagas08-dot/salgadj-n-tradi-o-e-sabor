@@ -24,6 +24,7 @@ import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
 import { Route as AdminPrecosRouteImport } from './routes/admin/precos'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminPedidosIndexRouteImport } from './routes/admin/pedidos.index'
+import { Route as AdminPedidosIdRouteImport } from './routes/admin/pedidos.$id'
 
 const QuemSomosRoute = QuemSomosRouteImport.update({
   id: '/quem-somos',
@@ -100,6 +101,11 @@ const AdminPedidosIndexRoute = AdminPedidosIndexRouteImport.update({
   path: '/pedidos/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminPedidosIdRoute = AdminPedidosIdRouteImport.update({
+  id: '/pedidos/$id',
+  path: '/pedidos/$id',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
+  '/admin/pedidos/$id': typeof AdminPedidosIdRoute
   '/admin/pedidos/': typeof AdminPedidosIndexRoute
 }
 export interface FileRoutesByTo {
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin': typeof AdminIndexRoute
   '/parceiros': typeof ParceirosIndexRoute
+  '/admin/pedidos/$id': typeof AdminPedidosIdRoute
   '/admin/pedidos': typeof AdminPedidosIndexRoute
 }
 export interface FileRoutesById {
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
+  '/admin/pedidos/$id': typeof AdminPedidosIdRoute
   '/admin/pedidos/': typeof AdminPedidosIndexRoute
 }
 export interface FileRouteTypes {
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/parceiros/$slug'
     | '/admin/'
     | '/parceiros/'
+    | '/admin/pedidos/$id'
     | '/admin/pedidos/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/parceiros/$slug'
     | '/admin'
     | '/parceiros'
+    | '/admin/pedidos/$id'
     | '/admin/pedidos'
   id:
     | '__root__'
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/parceiros/$slug'
     | '/admin/'
     | '/parceiros/'
+    | '/admin/pedidos/$id'
     | '/admin/pedidos/'
   fileRoutesById: FileRoutesById
 }
@@ -326,6 +338,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPedidosIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/pedidos/$id': {
+      id: '/admin/pedidos/$id'
+      path: '/pedidos/$id'
+      fullPath: '/admin/pedidos/$id'
+      preLoaderRoute: typeof AdminPedidosIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
@@ -333,6 +352,7 @@ interface AdminRouteRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPrecosRoute: typeof AdminPrecosRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminPedidosIdRoute: typeof AdminPedidosIdRoute
   AdminPedidosIndexRoute: typeof AdminPedidosIndexRoute
 }
 
@@ -340,6 +360,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminPrecosRoute: AdminPrecosRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminPedidosIdRoute: AdminPedidosIdRoute,
   AdminPedidosIndexRoute: AdminPedidosIndexRoute,
 }
 
