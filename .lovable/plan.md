@@ -1,58 +1,34 @@
-## Objetivo
+## Parte A — Campo de status (verificado)
 
-Criar a página pública `/orcamento` (atacado/revenda), hoje inexistente — os botões "Solicitar orçamento" / "Montar meu orçamento" passam a funcionar.
+`quotes` **já tem** a coluna `status text not null default 'novo'`, e a policy `admin manage quotes` (UPDATE) já permite escrita para admin/editor via `can_edit(auth.uid())`. **Não haverá migração nem coluna nova.** Convenção: `'atendido'` = atendido; qualquer outro valor (`'novo'`, etc.) = não atendido.
 
-## O que já existe (verificado)
+Observação: hoje a tabela `quotes` está vazia (nenhum pedido recebido ainda), então a tela deve tratar bem o estado vazio.
 
-- 15 grupos + 49 sabores, com `quote_unit`, `qty_step`, `min_qty_per_flavor` nos grupos.
-- Regras de mínimo (1.000 total / 200 por sabor) já carregadas por `loadQuoteCatalog`.
-- Tabelas de preço de revenda: "Revenda — congelado para fritar" (26 preços) e "Revenda — congelado para assar" (23 preços). Ambas estão marcadas como **não públicas** — por isso o cliente anônimo não as enxerga hoje.
-- Carrinho local (`useQuoteCart`) e envio atômico (`submitQuote` → RPC) prontos.
-- `whatsappLink()` em `src/lib/brand.ts`.
+## Parte B — Lista `/admin/pedidos`
 
-## Como exibir os preços sem enfraquecer a segurança
+Nova rota filha do gate admin existente (mesma proteção de sessão + `can_edit`).
 
-As tabelas de revenda continuam privadas no banco (RLS intacta, nada de `is_public = true`, nada de política nova para anônimo). Em vez disso, o servidor faz a leitura controlada:
+- Leitura como usuário autenticado pelo cliente do navegador (RLS aplicada), com TanStack Query.
+- Consulta: `quotes` ordenado por `created_at` desc, trazendo a contagem de `quote_items` junto.
+- Colunas: data de criação, nome, empresa, telefone, tipo de operação/evento, nº de itens, selo de status (Atendido / Não atendido em cores distintas).
+- Filtro por status (todos / não atendidos / atendidos) e busca por nome ou telefone (filtragem no cliente sobre a lista carregada).
+- Linhas não atendidas com destaque leve para priorização.
+- Estado vazio explicativo quando não houver pedidos.
 
-- Amplio `loadQuoteCatalog` (server-only) para, dentro do handler, carregar as duas tabelas de revenda com o cliente privilegiado do servidor e retornar **apenas** `{ product_id, price, quote_unit }` dos sabores publicados.
-- Nada de chave privilegiada no navegador; o cliente recebe só o número de exibição. Fechar os preços no futuro = remover esse bloco do loader.
+## Parte C — Detalhe
 
-## Página `/orcamento`
+Rota `/admin/pedidos/$id`:
 
-Cabeçalho com as condições visíveis desde o início (mínimo 1.000 unidades no total, 200 por sabor, passo 50 para fritos).
+- Dados do cliente: nome, telefone com link para WhatsApp via `whatsappLink()`, e-mail, empresa, cidade, tipo de operação, data do evento, convidados, mensagem, data de envio.
+- Itens de `quote_items`: nome do produto/sabor, quantidade e unidade, em tabela legível.
+- Botão que alterna entre `'atendido'` e `'novo'`, com toast (sonner) e invalidação da query para refletir na lista imediatamente.
 
-Catálogo:
-- Busca por nome de grupo ou sabor.
-- Agrupado por categoria (fritos / assados); cada grupo é um bloco expansível com seus sabores.
-- Por sabor: nome, preço de revenda com rótulo ("/ pacote de 50" ou "/ unidade") e controle de quantidade (+/− e input) com passo correto.
+## Navegação
 
-Cálculo (regra crítica):
-- `pacote_50`: subtotal = (quantidade ÷ 50) × preço do pacote.
-- `unidade`: subtotal = quantidade × preço.
-- Exibe subtotal por sabor, por grupo e total geral, sempre rotulado como "valor estimado, sujeito a confirmação".
-
-Validação bloqueante:
-- Sabor com quantidade > 0 precisa de ≥ 200; aviso inline "mínimo 200".
-- Passo forçado: fritos múltiplos de 50; assados inteiros.
-- Botão de envio desabilitado enquanto o total < 1.000, com aviso do quanto falta.
-- Envia só sabores com quantidade > 0, respeitando o limite de 200 itens.
-
-Resumo: painel lateral fixo no desktop, seção final no mobile — itens agrupados, subtotais, total estimado, contador de unidades e status do mínimo.
-
-Formulário: Nome*, Telefone/WhatsApp*, Empresa/buffet, Cidade, Tipo de operação (buffet, casa de festa, revenda, outro), observações. Validação com Zod.
-
-Dois envios:
-- "Enviar solicitação" → `submitQuote`, toast de sucesso, estado de confirmação e `clear()` do carrinho.
-- "Enviar pelo WhatsApp" → grava via `submitQuote` primeiro e depois abre `whatsappLink()` com a mensagem legível (dados + sabores/quantidades + total estimado).
+Em `src/routes/admin/route.tsx`, o item "Pedidos" deixa de ser "em breve" e passa a apontar para `/admin/pedidos`.
 
 ## Técnico
 
-- Persistência das escolhas em `useQuoteCart` (localStorage), usando `hydrated` para evitar mismatch de SSR.
-- `head()` com título "Orçamento de atacado — Salgadjén", description e canonical `/orcamento`.
-- Componentes e tokens existentes (`Section`, `SectionHeading`, `Reveal`, `buttonVariants`, inputs shadcn/ui); mobile-first; respeita `prefers-reduced-motion`.
-- Arquivos: novo `src/routes/orcamento.tsx` (+ componentes auxiliares se ficar extenso) e ajuste pontual em `src/lib/site.server.ts` / `site.functions.ts` para os preços de revenda.
-- Sem mudanças no design system, em migrações de segurança ou nas demais páginas públicas.
-
-## Observação
-
-As rotas `/produtos` e `/conteudos` também não existem ainda e continuam 404 — fora do escopo desta etapa, posso fazê-las em seguida.
+- Arquivos novos: `src/routes/admin/pedidos.index.tsx` e `src/routes/admin/pedidos.$id.tsx`; ajuste pontual em `src/routes/admin/route.tsx`.
+- Componentes shadcn/ui existentes (table, card, badge, button, select), responsivo desktop/tablet.
+- Sem service role no cliente, sem alterar `submit_quote`, funções SECURITY DEFINER, policies, páginas públicas ou o design system.
