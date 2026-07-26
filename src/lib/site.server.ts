@@ -153,7 +153,7 @@ export async function loadProduct(slug: string) {
     .eq("is_published", true)
     .maybeSingle();
   if (!product) return null;
-  const [faqs, prices, related] = await Promise.all([
+  const [faqs, prices, related, flavors, parent] = await Promise.all([
     sb.from("product_faqs").select("*").eq("product_id", product.id).order("display_order", ORDER),
     sb
       .from("product_prices")
@@ -163,15 +163,33 @@ export async function loadProduct(slug: string) {
       .from("products")
       .select("id,name,slug,short_description,image_url")
       .eq("is_published", true)
+      .eq("is_group", product.is_group ?? false)
       .eq("category_id", product.category_id ?? "")
       .neq("id", product.id)
       .limit(3),
+    product.is_group
+      ? sb
+          .from("products")
+          .select("*")
+          .eq("parent_id", product.id)
+          .eq("is_published", true)
+          .order("display_order", ORDER)
+      : Promise.resolve({ data: [] as never[] }),
+    product.parent_id
+      ? sb
+          .from("products")
+          .select("id,name,slug,quote_unit,qty_step,min_qty_per_flavor")
+          .eq("id", product.parent_id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
   ]);
   return {
     product,
     faqs: faqs.data ?? [],
     prices: (prices.data ?? []).filter((p) => p.price_tables?.is_public),
     related: related.data ?? [],
+    flavors: flavors.data ?? [],
+    parent: parent.data ?? null,
   };
 }
 
