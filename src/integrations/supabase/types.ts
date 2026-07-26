@@ -1400,6 +1400,10 @@ export type Database = {
         Args: { _table_id: string; _user_id: string }
         Returns: boolean
       }
+      has_price_table_grant: {
+        Args: { _table_id: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
