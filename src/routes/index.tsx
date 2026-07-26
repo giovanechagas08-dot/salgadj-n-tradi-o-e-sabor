@@ -160,18 +160,6 @@ function HomePage() {
               ))}
             </ol>
           </div>
-          <Reveal delay={0.1} className="mt-12">
-            <div className="overflow-hidden rounded-3xl">
-              <img
-                src={historia.image_url || historiaImg}
-                alt={historia.title}
-                width={1600}
-                height={900}
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover sm:aspect-[16/9]"
-              />
-            </div>
-          </Reveal>
         </Section>
       ) : null}
 
