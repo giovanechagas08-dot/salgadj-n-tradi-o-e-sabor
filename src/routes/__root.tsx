@@ -104,12 +104,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Archivo:wght@500;600;700&family=Figtree:wght@300;400;500;600&display=swap",
-      },
+      { rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous", href: "/__l5e/assets-v1/8053679b-e63d-454c-9dbb-fc84664ece3e/DKDisplayPatrol-Regular.woff2" },
+      { rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous", href: "/__l5e/assets-v1/9a0c3568-7579-45bb-ae29-f1074c463196/Bulo-Regular.woff2" },
+      { rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous", href: "/__l5e/assets-v1/0afe2bcc-8916-4ce6-b249-4857b8e51a3e/Colby-Regular.woff2" },
     ],
     scripts: [
       {

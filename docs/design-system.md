@@ -46,9 +46,9 @@ Tema único (claro). Não há dark mode neste sistema.
 
 | Família | Papel |
 | --- | --- |
-| Baloo 2 (`--font-display`) | Títulos |
-| Figtree (`--font-sans`) | Texto corrido e interface |
-| Archivo (`--font-eyebrow`) | Rótulos, overlines |
+| DK Display Patrol (`--font-display`) | Títulos |
+| Bulo (`--font-sans`) | Texto corrido e interface |
+| Colby (`--font-eyebrow`) | Subtítulos, rótulos, overlines |
 
 Escala fluida (`clamp`), aplicada **somente** via utilities:
 

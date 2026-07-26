@@ -2,6 +2,65 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* ---------- Fontes institucionais (CDN Lovable Assets) ----------
+   Títulos: DK Display Patrol · Subtítulos: Colby · Texto corrido: Bulo */
+@font-face {
+  font-family: "DK Display Patrol";
+  src: url("/__l5e/assets-v1/8053679b-e63d-454c-9dbb-fc84664ece3e/DKDisplayPatrol-Regular.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Colby";
+  src: url("/__l5e/assets-v1/0afe2bcc-8916-4ce6-b249-4857b8e51a3e/Colby-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Colby";
+  src: url("/__l5e/assets-v1/5a1a90fd-e373-43bb-934c-7f602f4cc97a/Colby-Medium.woff2") format("woff2");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Colby";
+  src: url("/__l5e/assets-v1/9517156a-e7bb-41fe-a141-582a997ec738/Colby-Bold.woff2") format("woff2");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bulo";
+  src: url("/__l5e/assets-v1/9640125b-7238-47ff-954e-090922df6fb3/Bulo-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bulo";
+  src: url("/__l5e/assets-v1/9a0c3568-7579-45bb-ae29-f1074c463196/Bulo-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bulo";
+  src: url("/__l5e/assets-v1/f7ca249c-b7aa-4b6d-8e40-d08ed0c201c7/Bulo-Medium.woff2") format("woff2");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bulo";
+  src: url("/__l5e/assets-v1/d2af546f-e36a-4de2-90f7-ed2cfe378e03/Bulo-Bold.woff2") format("woff2");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    SALGADJÉN — DESIGN SYSTEM
    Fonte única de verdade dos tokens visuais. Documentação: docs/design-system.md
@@ -227,9 +286,9 @@
   --shadow-raised: var(--shadow-raised);
   --shadow-overlay: var(--shadow-overlay);
 
-  --font-display: "Baloo 2", "Trebuchet MS", sans-serif;
-  --font-eyebrow: "Archivo", "Helvetica Neue", sans-serif;
-  --font-sans: "Figtree", "Helvetica Neue", sans-serif;
+  --font-display: "DK Display Patrol", "Trebuchet MS", sans-serif;
+  --font-eyebrow: "Colby", "Helvetica Neue", sans-serif;
+  --font-sans: "Bulo", "Helvetica Neue", sans-serif;
 
   --ease-standard: var(--ease-standard);
   --ease-entrance: var(--ease-entrance);
