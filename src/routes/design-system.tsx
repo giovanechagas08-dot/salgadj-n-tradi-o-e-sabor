@@ -144,7 +144,7 @@ function DesignSystemPage() {
         <SectionHeading
           eyebrow="Fundação"
           title="Escala tipográfica"
-          description="Baloo 2 para títulos, Figtree para texto, Archivo para rótulos. Todos os degraus são fluidos via clamp — nenhum tamanho arbitrário é permitido."
+          description="DK Display Patrol para títulos, Colby para subtítulos e rótulos, Bulo para texto corrido. Todos os degraus são fluidos via clamp — nenhum tamanho arbitrário é permitido."
           rule
         />
         <div className="mt-12 space-y-8">
