@@ -82,7 +82,7 @@ function QuemSomosPage() {
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 text-xl text-brand-purple-deep">{value.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{value.text}</p>
+                <p className="mt-3 type-body-sm text-muted-foreground">{value.text}</p>
               </div>
             </Reveal>
           ))}

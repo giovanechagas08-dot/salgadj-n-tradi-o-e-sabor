@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/button";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { motion } from "motion/react";
@@ -64,7 +65,7 @@ function HomePage() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-ink via-brand-ink/80 to-brand-ink/35"
+          className="absolute inset-0 -z-10 overlay-scrim"
         />
 
         <div className="container-page">
@@ -75,17 +76,17 @@ function HomePage() {
             className="max-w-4xl"
           >
             <p className="eyebrow text-brand-yellow">{hero?.eyebrow ?? "Desde 1988"}</p>
-            <h1 className="mt-6 text-4xl leading-[1.03] md:text-6xl lg:text-7xl">
+            <h1 className="type-hero-xl mt-6">
               {hero?.title ?? BRAND.tagline}
             </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-brand-cream/80 md:text-xl">
+            <p className="mt-8 max-w-2xl type-lead text-brand-cream/80 md:text-xl">
               {hero?.subtitle ??
                 "Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos."}
             </p>
             <div className="mt-12 flex flex-wrap gap-4">
               <Link
                 to="/orcamento"
-                className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-7 py-4 text-sm font-semibold text-brand-purple-deep transition-transform hover:scale-[1.03]"
+                className={buttonVariants({ variant: "secondary", size: "xl" })}
               >
                 {hero?.primary_cta_label ?? "Solicitar orçamento"}
                 <ArrowRight className="size-4" />
@@ -94,7 +95,7 @@ function HomePage() {
                 href={whatsappLink(`Olá! Gostaria de falar com a ${BRAND.name}.`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full border border-brand-cream/35 px-7 py-4 text-sm font-medium text-brand-cream transition-colors hover:border-brand-yellow hover:text-brand-yellow"
+                className={buttonVariants({ variant: "inverse", size: "xl" })}
               >
                 {hero?.secondary_cta_label ?? "Falar no WhatsApp"}
               </a>
@@ -109,7 +110,7 @@ function HomePage() {
           <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
             {stats.slice(0, 4).map((stat, i) => (
               <Reveal key={stat.id} delay={i * 0.08}>
-                <p className="font-display text-4xl text-brand-purple md:text-5xl">
+                <p className="type-display text-brand-purple">
                   {stat.prefix ?? ""}
                   {stat.value.toLocaleString("pt-BR")}
                   {stat.suffix ?? ""}
@@ -147,7 +148,7 @@ function HomePage() {
                         {String(i + 1).padStart(2, "0")}
                       </p>
                       <h3 className="mt-4 text-xl text-brand-cream">{item.title}</h3>
-                      <p className="mt-3 text-sm leading-relaxed text-brand-cream/75">
+                      <p className="mt-3 type-body-sm text-brand-cream/75">
                         {item.description}
                       </p>
                     </div>
@@ -185,9 +186,9 @@ function HomePage() {
                     <Reveal key={event.id} delay={i * 0.06}>
                       <li className="relative pb-10 last:pb-0">
                         <span className="absolute -left-[38px] top-1.5 size-3 rounded-full bg-brand-yellow" />
-                        <p className="font-display text-2xl text-brand-yellow">{event.year}</p>
+                        <p className="type-h3 text-brand-yellow">{event.year}</p>
                         <h3 className="mt-1 text-lg text-brand-cream">{event.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-brand-cream/70">
+                        <p className="mt-2 type-body-sm text-brand-cream/70">
                           {event.description}
                         </p>
                       </li>
@@ -254,12 +255,12 @@ function HomePage() {
                 <Link
                   to="/parceiros/$slug"
                   params={{ slug: partner.slug }}
-                  className="group flex h-full flex-col justify-between rounded-3xl bg-card p-8 transition-shadow hover:shadow-[0_24px_60px_-40px_rgba(26,15,30,0.6)]"
+                  className="group flex h-full flex-col justify-between rounded-3xl bg-card p-8 transition-shadow hover:shadow-raised"
                 >
                   <div>
                     <p className="eyebrow text-brand-yellow">{partner.segment}</p>
                     <h3 className="mt-4 text-xl text-brand-purple-deep">{partner.name}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-3 type-body-sm text-muted-foreground">
                       {partner.summary}
                     </p>
                   </div>
@@ -308,21 +309,21 @@ function HomePage() {
         <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           <Reveal>
             <p className="eyebrow text-brand-purple-deep/70">Próximo passo</p>
-            <h2 className="mt-5 max-w-2xl text-3xl leading-tight text-brand-purple-deep md:text-5xl">
+            <h2 className="type-display mt-5 max-w-2xl text-brand-purple-deep">
               Conte o que você está organizando. Cuidamos do resto.
             </h2>
           </Reveal>
           <Reveal delay={0.1} className="flex flex-wrap gap-4 lg:justify-end">
             <Link
               to="/orcamento"
-              className="inline-flex items-center gap-2 rounded-full bg-brand-purple px-7 py-4 text-sm font-semibold text-brand-cream transition-transform hover:scale-[1.03]"
+              className={buttonVariants({ variant: "primary", size: "xl" })}
             >
               Montar meu orçamento
               <ArrowRight className="size-4" />
             </Link>
             <Link
               to="/contato"
-              className="inline-flex items-center rounded-full border border-brand-purple-deep/30 px-7 py-4 text-sm font-medium text-brand-purple-deep transition-colors hover:bg-brand-purple-deep hover:text-brand-cream"
+              className={buttonVariants({ variant: "outline", size: "xl" })}
             >
               Falar com a equipe
             </Link>

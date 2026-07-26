@@ -16,6 +16,7 @@ import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
 import { Route as EstruturaRouteImport } from './routes/estrutura'
 import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
+import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
 import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
@@ -55,6 +56,11 @@ const DiferenciaisRoute = DiferenciaisRouteImport.update({
   path: '/diferenciais',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DesignSystemRoute = DesignSystemRouteImport.update({
+  id: '/design-system',
+  path: '/design-system',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,6 +79,7 @@ const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/design-system'
     | '/diferenciais'
     | '/estrutura'
     | '/experiencia'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/design-system'
     | '/diferenciais'
     | '/estrutura'
     | '/experiencia'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/design-system'
     | '/diferenciais'
     | '/estrutura'
     | '/experiencia'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DesignSystemRoute: typeof DesignSystemRoute
   DiferenciaisRoute: typeof DiferenciaisRoute
   EstruturaRoute: typeof EstruturaRoute
   ExperienciaRoute: typeof ExperienciaRoute
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiferenciaisRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/design-system': {
+      id: '/design-system'
+      path: '/design-system'
+      fullPath: '/design-system'
+      preLoaderRoute: typeof DesignSystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DesignSystemRoute: DesignSystemRoute,
   DiferenciaisRoute: DiferenciaisRoute,
   EstruturaRoute: EstruturaRoute,
   ExperienciaRoute: ExperienciaRoute,
@@ -250,13 +271,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

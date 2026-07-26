@@ -65,13 +65,13 @@ function EstruturaPage() {
           {sections.map((item, i) => (
             <Reveal key={item.id} delay={i * 0.06}>
               <article className="flex h-full flex-col rounded-3xl bg-card p-8 md:p-10">
-                <h3 className="text-xl text-brand-purple-deep md:text-2xl">{item.title}</h3>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground md:text-base">
+                <h3 className="type-h3 text-brand-purple-deep">{item.title}</h3>
+                <p className="mt-4 flex-1 type-body-sm text-muted-foreground md:text-base">
                   {item.description}
                 </p>
                 {item.metric_value ? (
                   <div className="mt-8 border-t border-border pt-6">
-                    <p className="font-display text-3xl text-brand-purple">{item.metric_value}</p>
+                    <p className="type-h2 text-brand-purple">{item.metric_value}</p>
                     <p className="mt-1 text-sm text-muted-foreground">{item.metric_label}</p>
                   </div>
                 ) : null}

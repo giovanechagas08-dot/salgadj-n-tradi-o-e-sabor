@@ -113,7 +113,7 @@ function PartnerPage() {
         <Section tone="purple">
           {testimonials.map((item: { id: string; quote: string; author_name: string; author_role: string | null }) => (
             <figure key={item.id} className="mx-auto max-w-3xl text-center">
-              <blockquote className="font-display text-2xl leading-snug text-brand-cream md:text-3xl">
+              <blockquote className="type-h2 text-brand-cream">
                 “{item.quote}”
               </blockquote>
               <figcaption className="mt-6 text-sm text-brand-yellow">
