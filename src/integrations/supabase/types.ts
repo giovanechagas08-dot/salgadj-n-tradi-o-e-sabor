@@ -1412,6 +1412,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      submit_quote: { Args: { _items: Json; _quote: Json }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "editor" | "viewer"
