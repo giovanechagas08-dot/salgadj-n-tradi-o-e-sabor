@@ -274,37 +274,27 @@ export type QuoteInput = {
 
 export async function createQuote(input: QuoteInput) {
   const sb = publicClient();
-  const { data: quote, error } = await sb
-    .from("quotes")
-    .insert({
+  const { data, error } = await sb.rpc("submit_quote", {
+    _quote: {
       name: input.name,
       phone: input.phone,
-      email: input.email || null,
-      company: input.company || null,
-      city: input.city || null,
-      event_type: input.event_type || null,
-      event_date: input.event_date || null,
-      guests: input.guests ?? null,
-      message: input.message || null,
-      source: "site",
-    })
-    .select("id")
-    .single();
+      email: input.email ?? "",
+      company: input.company ?? "",
+      city: input.city ?? "",
+      event_type: input.event_type ?? "",
+      event_date: input.event_date ?? "",
+      guests: input.guests != null ? String(input.guests) : "",
+      message: input.message ?? "",
+    },
+    _items: input.items.map((item) => ({
+      product_id: item.product_id,
+      product_name: item.product_name,
+      quantity: String(item.quantity),
+      unit: item.unit,
+    })),
+  });
   if (error) throw new Error(error.message);
-
-  if (input.items.length) {
-    const { error: itemsError } = await sb.from("quote_items").insert(
-      input.items.map((item) => ({
-        quote_id: quote.id,
-        product_id: item.product_id,
-        product_name: item.product_name,
-        quantity: item.quantity,
-        unit: item.unit,
-      })),
-    );
-    if (itemsError) throw new Error(itemsError.message);
-  }
-  return { id: quote.id };
+  return { id: data as unknown as string };
 }
 
 export async function createContact(input: {
