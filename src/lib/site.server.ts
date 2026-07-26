@@ -141,7 +141,14 @@ export async function loadCatalog() {
       .eq("is_published", true)
       .order("display_order", ORDER),
   ]);
-  return { ...base, categories: categories.data ?? [], products: products.data ?? [] };
+  const all = products.data ?? [];
+  return {
+    ...base,
+    categories: categories.data ?? [],
+    products: all,
+    groups: all.filter((p) => p.is_group),
+    flavors: all.filter((p) => p.parent_id),
+  };
 }
 
 export async function loadProduct(slug: string) {
@@ -153,7 +160,7 @@ export async function loadProduct(slug: string) {
     .eq("is_published", true)
     .maybeSingle();
   if (!product) return null;
-  const [faqs, prices, related] = await Promise.all([
+  const [faqs, prices, related, flavors, parent] = await Promise.all([
     sb.from("product_faqs").select("*").eq("product_id", product.id).order("display_order", ORDER),
     sb
       .from("product_prices")
@@ -163,15 +170,33 @@ export async function loadProduct(slug: string) {
       .from("products")
       .select("id,name,slug,short_description,image_url")
       .eq("is_published", true)
+      .eq("is_group", product.is_group ?? false)
       .eq("category_id", product.category_id ?? "")
       .neq("id", product.id)
       .limit(3),
+    product.is_group
+      ? sb
+          .from("products")
+          .select("*")
+          .eq("parent_id", product.id)
+          .eq("is_published", true)
+          .order("display_order", ORDER)
+      : Promise.resolve({ data: [] as never[] }),
+    product.parent_id
+      ? sb
+          .from("products")
+          .select("id,name,slug,quote_unit,qty_step,min_qty_per_flavor")
+          .eq("id", product.parent_id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
   ]);
   return {
     product,
     faqs: faqs.data ?? [],
     prices: (prices.data ?? []).filter((p) => p.price_tables?.is_public),
     related: related.data ?? [],
+    flavors: flavors.data ?? [],
+    parent: parent.data ?? null,
   };
 }
 
@@ -246,17 +271,33 @@ export async function loadPost(slug: string) {
 
 export async function loadQuoteCatalog() {
   const sb = publicClient();
-  const [base, categories, products] = await Promise.all([
+  const [base, categories, products, settings] = await Promise.all([
     loadPage("orcamento"),
     sb.from("categories").select("*").eq("is_active", true).order("display_order", ORDER),
     sb
       .from("products")
-      .select("id,name,slug,unit,image_url,category_id,short_description")
+      .select(
+        "id,name,slug,unit,image_url,category_id,short_description,parent_id,is_group,flavor_name,quote_unit,qty_step,min_qty_per_flavor",
+      )
       .eq("is_published", true)
       .eq("is_available", true)
       .order("display_order", ORDER),
+    sb.from("site_settings").select("key,value").eq("key", "pedido").maybeSingle(),
   ]);
-  return { ...base, categories: categories.data ?? [], products: products.data ?? [] };
+  const all = products.data ?? [];
+  const raw = (settings.data?.value ?? {}) as Record<string, unknown>;
+  return {
+    ...base,
+    categories: categories.data ?? [],
+    products: all,
+    groups: all
+      .filter((p) => p.is_group)
+      .map((g) => ({ ...g, flavors: all.filter((f) => f.parent_id === g.id) })),
+    rules: {
+      minTotalUnits: Number(raw.min_total_unidades ?? 1000),
+      minPerFlavor: Number(raw.min_por_sabor ?? 200),
+    },
+  };
 }
 
 export type QuoteInput = {

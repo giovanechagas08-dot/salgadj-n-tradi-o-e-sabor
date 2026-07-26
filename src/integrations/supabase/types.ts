@@ -955,17 +955,23 @@ export type Database = {
           description: string | null
           differentials: string | null
           display_order: number
+          flavor_name: string | null
           gallery: Json
           id: string
           image_url: string | null
           ingredients: string | null
           is_available: boolean
           is_featured: boolean
+          is_group: boolean
           is_published: boolean
+          min_qty_per_flavor: number | null
           name: string
           occasion: string | null
+          parent_id: string | null
           production: string | null
           qty_per_person: string | null
+          qty_step: number | null
+          quote_unit: string | null
           seo_description: string | null
           seo_title: string | null
           short_description: string | null
@@ -981,17 +987,23 @@ export type Database = {
           description?: string | null
           differentials?: string | null
           display_order?: number
+          flavor_name?: string | null
           gallery?: Json
           id?: string
           image_url?: string | null
           ingredients?: string | null
           is_available?: boolean
           is_featured?: boolean
+          is_group?: boolean
           is_published?: boolean
+          min_qty_per_flavor?: number | null
           name: string
           occasion?: string | null
+          parent_id?: string | null
           production?: string | null
           qty_per_person?: string | null
+          qty_step?: number | null
+          quote_unit?: string | null
           seo_description?: string | null
           seo_title?: string | null
           short_description?: string | null
@@ -1007,17 +1019,23 @@ export type Database = {
           description?: string | null
           differentials?: string | null
           display_order?: number
+          flavor_name?: string | null
           gallery?: Json
           id?: string
           image_url?: string | null
           ingredients?: string | null
           is_available?: boolean
           is_featured?: boolean
+          is_group?: boolean
           is_published?: boolean
+          min_qty_per_flavor?: number | null
           name?: string
           occasion?: string | null
+          parent_id?: string | null
           production?: string | null
           qty_per_person?: string | null
+          qty_step?: number | null
+          quote_unit?: string | null
           seo_description?: string | null
           seo_title?: string | null
           short_description?: string | null
@@ -1033,6 +1051,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
