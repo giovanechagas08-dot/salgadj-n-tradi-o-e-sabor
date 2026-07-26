@@ -21,14 +21,34 @@ export function whatsappLink(message: string, number = BRAND.whatsapp) {
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
-export const NAV = [
-  { label: "A Salgadjén", to: "/quem-somos" as const },
-  { label: "História", to: "/historia" as const },
-  { label: "Estrutura", to: "/estrutura" as const },
-  { label: "Processos", to: "/processos" as const },
-  { label: "Parceiros", to: "/parceiros" as const },
-  { label: "Grandes Eventos", to: "/grandes-eventos" as const },
-  { label: "Produtos", to: "/produtos" as const },
-  { label: "Galeria", to: "/galeria" as const },
-  { label: "Conteúdos", to: "/conteudos" as const },
+export type NavLeaf = {
+  label: string;
+  to: string;
+  description?: string;
+};
+
+export type NavItem = NavLeaf & { children?: NavLeaf[] };
+
+export const NAV_PRIMARY: NavItem[] = [
+  {
+    label: "A Salgadjén",
+    to: "/quem-somos",
+    children: [
+      { label: "Quem somos", to: "/quem-somos", description: "Nossa essência e posicionamento" },
+      { label: "História", to: "/historia", description: "Uma trajetória iniciada em 1988" },
+      { label: "Estrutura", to: "/estrutura", description: "Capacidade produtiva e logística" },
+      { label: "Processos", to: "/processos", description: "Como garantimos consistência" },
+      { label: "Parceiros", to: "/parceiros", description: "Cases com buffets e empresas" },
+      { label: "Grandes Eventos", to: "/grandes-eventos", description: "Operações de alto volume" },
+    ],
+  },
+  { label: "Produtos", to: "/produtos" },
+  { label: "Galeria", to: "/galeria" },
+  { label: "Conteúdos", to: "/conteudos" },
 ];
+
+export const NAV: NavLeaf[] = NAV_PRIMARY.flatMap((item) =>
+  item.children ? item.children : [{ label: item.label, to: item.to }],
+);
+
+
