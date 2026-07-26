@@ -28,11 +28,11 @@ export const Route = createFileRoute("/")({
         content:
           "Empresa familiar fundada em 1988. Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos, com produção sob demanda e entrega pontual.",
       },
-      { property: "og:title", content: "Salgadjén — Soluções gastronômicas desde 1988" },
+      { property: "og:title", content: "Salgadjén — Há 38 anos fazendo parte dos melhores momentos" },
       {
         property: "og:description",
         content:
-          "Estrutura, tradição e atendimento próximo para eventos de qualquer porte. Solicite um orçamento.",
+          "Empresa familiar fundada em 1988. Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos, com produção sob demanda e entrega pontual.",
       },
       { property: "og:url", content: "/" },
     ],

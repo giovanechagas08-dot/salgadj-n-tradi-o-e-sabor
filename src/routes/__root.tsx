@@ -80,27 +80,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Salgadjén — Soluções gastronômicas para eventos desde 1988" },
+      { title: "Salgadjén — Há 38 anos fazendo parte dos melhores momentos" },
       {
         name: "description",
         content:
-          "Há 38 anos fazendo parte dos melhores momentos. Salgados, doces e refeições para buffets, casas de festas, empresas e grandes eventos.",
+          "Empresa familiar fundada em 1988. Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos, com produção sob demanda e entrega pontual.",
       },
       { name: "author", content: "Salgadjén" },
       { property: "og:site_name", content: "Salgadjén" },
-      { property: "og:title", content: "Salgadjén — Soluções gastronômicas desde 1988" },
+      { property: "og:title", content: "Salgadjén — Há 38 anos fazendo parte dos melhores momentos" },
       {
         property: "og:description",
         content:
-          "Empresa familiar com quase quatro décadas de experiência em soluções gastronômicas para eventos de qualquer porte.",
+          "Empresa familiar fundada em 1988. Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos, com produção sob demanda e entrega pontual.",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Salgadjén — Há 38 anos fazendo parte dos melhores momentos" },
+      { name: "twitter:description", content: "Empresa familiar fundada em 1988. Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos, com produção sob demanda e entrega pontual." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/16969872-dd8b-41aa-a832-c836f28a4d4d/id-preview-02d653bb--9a0bc9ab-b8a7-46b6-8dc1-5621460d4802.lovable.app-1785090314897.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/16969872-dd8b-41aa-a832-c836f28a4d4d/id-preview-02d653bb--9a0bc9ab-b8a7-46b6-8dc1-5621460d4802.lovable.app-1785090314897.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
