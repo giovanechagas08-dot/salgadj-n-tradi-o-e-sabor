@@ -17,6 +17,7 @@ import { Route as EstruturaRouteImport } from './routes/estrutura'
 import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
+import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
 
 const QuemSomosRoute = QuemSomosRouteImport.update({
   id: '/quem-somos',
@@ -58,6 +59,11 @@ const ParceirosIndexRoute = ParceirosIndexRouteImport.update({
   path: '/parceiros/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
+  id: '/parceiros/$slug',
+  path: '/parceiros/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/historia': typeof HistoriaRoute
   '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/parceiros/$slug': typeof ParceirosSlugRoute
   '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/historia': typeof HistoriaRoute
   '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/parceiros/$slug': typeof ParceirosSlugRoute
   '/parceiros': typeof ParceirosIndexRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/historia': typeof HistoriaRoute
   '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/parceiros/$slug': typeof ParceirosSlugRoute
   '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/processos'
     | '/quem-somos'
+    | '/parceiros/$slug'
     | '/parceiros/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/processos'
     | '/quem-somos'
+    | '/parceiros/$slug'
     | '/parceiros'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/processos'
     | '/quem-somos'
+    | '/parceiros/$slug'
     | '/parceiros/'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   HistoriaRoute: typeof HistoriaRoute
   ProcessosRoute: typeof ProcessosRoute
   QuemSomosRoute: typeof QuemSomosRoute
+  ParceirosSlugRoute: typeof ParceirosSlugRoute
   ParceirosIndexRoute: typeof ParceirosIndexRoute
 }
 
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParceirosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parceiros/$slug': {
+      id: '/parceiros/$slug'
+      path: '/parceiros/$slug'
+      fullPath: '/parceiros/$slug'
+      preLoaderRoute: typeof ParceirosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistoriaRoute: HistoriaRoute,
   ProcessosRoute: ProcessosRoute,
   QuemSomosRoute: QuemSomosRoute,
+  ParceirosSlugRoute: ParceirosSlugRoute,
   ParceirosIndexRoute: ParceirosIndexRoute,
 }
 export const routeTree = rootRouteImport
