@@ -141,7 +141,14 @@ export async function loadCatalog() {
       .eq("is_published", true)
       .order("display_order", ORDER),
   ]);
-  return { ...base, categories: categories.data ?? [], products: products.data ?? [] };
+  const all = products.data ?? [];
+  return {
+    ...base,
+    categories: categories.data ?? [],
+    products: all,
+    groups: all.filter((p) => p.is_group),
+    flavors: all.filter((p) => p.parent_id),
+  };
 }
 
 export async function loadProduct(slug: string) {
