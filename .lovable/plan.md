@@ -1,44 +1,37 @@
-## Situação atual (verificada)
+## Situação verificada
 
-- Existem hoje `src/routes/estrutura.tsx` e `src/routes/processos.tsx`. **Não existe** `src/routes/grandes-eventos.tsx` (a rota nunca foi criada) — nada a apagar ali.
-- A home não tem seções escritas à mão: ela renderiza dinamicamente as 10 seções vindas do banco (`home_sections`), na ordem: experiência, história, quem-somos, estrutura, processos, diferenciais, parceiros, grandes-eventos, produtos, tabela. Somando hero, números, grid de parceiros, depoimentos e CTA final, chega-se às 14 seções.
-- Os bugs relatados têm origem nessa lista: "parceiros" aparece como seção do banco **e** como grid de parceiros; "produtos" e "tabela" são duas seções seguidas de mesmo tom claro (daí a sensação de parágrafos sobrepostos); e o grid de diferenciais renderiza **todos** os registros do banco, sem limite de 6.
-- Links para as rotas removidas: `src/lib/brand.ts` (menu), `src/routes/quem-somos.tsx` (CTA "Ver nossa estrutura" → /estrutura), `src/routes/estrutura.tsx` (→ /processos), `src/routes/processos.tsx` (→ /diferenciais), e os CTAs das seções do banco na home.
+Medi a seção no preview: nada tem `min-height` nem `grid-rows` fixo. O vazio vem de duas coisas reais:
 
-Observação (fora do escopo, só para você saber): rotas como `/produtos`, `/orcamento`, `/contato`, `/conteudos` e `/tabela-de-valores` ainda não existem no projeto — links para elas continuarão dando 404 até serem construídas. Não vou mexer nisso agora.
+1. **Colunas desiguais.** O grid é `lg:grid-cols-[1fr_1.1fr] lg:items-start`. A coluna esquerda (título + texto + link + imagem 4:3) mede **773px** de altura; a lista de marcos à direita mede **383px**. Sobram ~390px de roxo vazio à direita, abaixo dos marcos.
+2. **Ritmo vertical somado.** As seções "História" e "Diferenciais" usam o mesmo tom roxo e são vizinhas, então o padding inferior de uma soma com o superior da outra — o que aparece como o grande bloco vazio abaixo da imagem, sem nenhuma divisão visual entre as duas seções.
 
-## O que será feito
+As Correções 2 (dados de contato) e 3 (Galeria duplicada) **já estão aplicadas** no código atual: `BRAND` em `src/lib/brand.ts` já tem os dois telefones, WhatsApp `5521997468686` e Nova Iguaçu — RJ; o JSON-LD do `__root.tsx` já usa Nova Iguaçu/RJ e Rio de Janeiro; e o rodapé já lista "Galeria" uma única vez (vem só da iteração de `NAV`). Nada a fazer nelas.
 
-**1. Remover as páginas**
-- Apagar `src/routes/estrutura.tsx` e `src/routes/processos.tsx`; a árvore de rotas é regenerada automaticamente pelo plugin do router.
-- Server functions e loaders (`getEstrutura`, `getProcessos`) permanecem intactos, sem uso.
+## O que vou mudar (apenas `src/routes/index.tsx`)
 
-**2. Zerar links quebrados**
-- `src/lib/brand.ts`: menu "A Salgadjén" passa a ter apenas Quem somos, História e Parceiros (com as descrições indicadas). O footer usa a mesma constante, então se atualiza sozinho.
-- `src/routes/quem-somos.tsx`: o bloco final que aponta para `/estrutura` passa a apontar para `/parceiros` ("Ver os cases"), mantendo o encadeamento narrativo.
-- Home: as seções de estrutura, processos e grandes-eventos deixam de ser renderizadas (ver abaixo), eliminando os CTAs correspondentes.
-- Varredura final para confirmar zero ocorrências de `/estrutura`, `/processos` e `/grandes-eventos`.
+Reorganizar o bloco da História para que a altura seja ditada pelo conteúdo:
 
-**3. Enxugar a home (`src/routes/index.tsx`)**
+```text
+antes                             depois
+┌──────────┬──────────┐           ┌──────────┬──────────┐
+│ título   │ marcos   │           │ título   │ marcos   │
+│ link     │ 1988     │           │ link     │ 1988     │
+│ ┌──────┐ │ 1996     │           │          │ 1996     │
+│ │imagem│ │ 2004     │           │          │ 2004     │
+│ └──────┘ │ 2012     │           │          │ 2012     │
+│          │  (vazio) │           └──────────┴──────────┘
+│  (vazio) │  (vazio) │           ┌─────────────────────┐
+└──────────┴──────────┘           │  imagem panorâmica  │
+                                  └─────────────────────┘
+```
 
-Passa a renderizar exatamente 8 seções, filtrando as seções do banco por uma lista permitida no próprio componente (sem alterar banco nem server functions):
+- Tirar a imagem de dentro da coluna esquerda e colocá-la abaixo do grid, em largura total, com proporção panorâmica (16/9 no desktop) — assim as duas colunas passam a ter alturas próximas e não sobra célula vazia.
+- Trocar `lg:items-start` por alinhamento que não force altura extra e manter `gap` normal; sem `min-height` em lugar nenhum.
+- Manter a imagem visível também no mobile (hoje ela é `hidden lg:block`), já que agora ela ocupa uma faixa própria — sem espaço reservado quando ausente.
+- Reduzir o ritmo entre História e Diferenciais: como são dois blocos roxos consecutivos, aplicar `rhythm="sm"` no fim/início desse par para eliminar o dobro de respiro, mantendo o padrão de espaçamento do design system (sem tocar em tokens ou em `section.tsx`).
 
-1. Hero — inalterado
-2. Números — 4 stats
-3. Experiência — seção `experiencia` + link para /experiencia
-4. História — seção `historia` com timeline limitada a **4** marcos + link para /historia
-5. Diferenciais — seção `diferenciais` com no máximo **6** itens, numerados sequencialmente 01–06 pela posição
-6. Parceiros / prova social — **apenas** o bloco de 3 depoimentos, com link "Ver cases →" para /parceiros (o grid de cards de parceiros e a seção `parceiros` do banco saem)
-7. Produtos — um único bloco, com um só parágrafo, e dois CTAs: "Ver produtos →" e "Tabela de valores →" (funde as seções `produtos` e `tabela`, o que resolve a sobreposição)
-8. CTA final amarelo — inalterado
+Conteúdo, textos, número de marcos, tokens, componentes base, server functions e banco permanecem intactos.
 
-Saem da home: quem-somos, estrutura, processos, grandes-eventos, grid de parceiros e a seção duplicada de tabela.
+## Verificação
 
-O `head()` de SEO da home fica exatamente como está.
-
-## Detalhes técnicos
-
-- A filtragem usa um mapa de slugs permitidos (`experiencia`, `historia`, `diferenciais`) mais um render dedicado para o bloco de produtos que lê as seções `produtos`/`tabela` do banco apenas para título e labels de CTA; nada é hardcoded que já venha do CMS.
-- `differentials.slice(0, 6)` com índice de posição para a numeração; `timeline.slice(0, 4)`.
-- Imports não usados (`eventosImg`, `producaoImg`, `partners`) são removidos, e o mapa `SECTION_IMAGES` fica só com `historia`.
-- Continuam sendo usados os componentes canônicos `Section`, `SectionHeading`, `Reveal`, `buttonVariants`. Nenhuma mudança em `src/styles.css`, tokens, componentes base ou migrações.
+Rodar o build e capturar novamente a seção no preview em desktop e mobile para confirmar que não há mais faixa roxa vazia e que os 4 marcos e a imagem seguem lá.
