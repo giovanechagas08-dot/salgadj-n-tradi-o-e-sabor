@@ -20,6 +20,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
+import { Route as AdminPrecosRouteImport } from './routes/admin/precos'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
 const QuemSomosRoute = QuemSomosRouteImport.update({
@@ -77,6 +78,11 @@ const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
   path: '/parceiros/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPrecosRoute = AdminPrecosRouteImport.update({
+  id: '/precos',
+  path: '/precos',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/precos': typeof AdminPrecosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/precos': typeof AdminPrecosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin': typeof AdminIndexRoute
   '/parceiros': typeof ParceirosIndexRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/precos': typeof AdminPrecosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/quem-somos'
     | '/admin/login'
+    | '/admin/precos'
     | '/parceiros/$slug'
     | '/admin/'
     | '/parceiros/'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/quem-somos'
     | '/admin/login'
+    | '/admin/precos'
     | '/parceiros/$slug'
     | '/admin'
     | '/parceiros'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/quem-somos'
     | '/admin/login'
+    | '/admin/precos'
     | '/parceiros/$slug'
     | '/admin/'
     | '/parceiros/'
@@ -261,6 +273,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParceirosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/precos': {
+      id: '/admin/precos'
+      path: '/precos'
+      fullPath: '/admin/precos'
+      preLoaderRoute: typeof AdminPrecosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -273,11 +292,13 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminPrecosRoute: typeof AdminPrecosRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
+  AdminPrecosRoute: AdminPrecosRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -300,3 +321,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
