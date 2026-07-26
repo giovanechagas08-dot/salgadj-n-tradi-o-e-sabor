@@ -1,45 +1,58 @@
 ## Objetivo
 
-Entregar a base do painel administrativo: login real, proteção das rotas `/admin` e a tela de edição de preços dos 49 sabores nas 3 tabelas de preço.
+Criar a página pública `/orcamento` (atacado/revenda), hoje inexistente — os botões "Solicitar orçamento" / "Montar meu orçamento" passam a funcionar.
 
-## Acesso
+## O que já existe (verificado)
 
-Hoje nenhum usuário tem papel atribuído. Vou:
+- 15 grupos + 49 sabores, com `quote_unit`, `qty_step`, `min_qty_per_flavor` nos grupos.
+- Regras de mínimo (1.000 total / 200 por sabor) já carregadas por `loadQuoteCatalog`.
+- Tabelas de preço de revenda: "Revenda — congelado para fritar" (26 preços) e "Revenda — congelado para assar" (23 preços). Ambas estão marcadas como **não públicas** — por isso o cliente anônimo não as enxerga hoje.
+- Carrinho local (`useQuoteCart`) e envio atômico (`submitQuote` → RPC) prontos.
+- `whatsappLink()` em `src/lib/brand.ts`.
 
-1. Criar a conta `giovane.chagas08@gmail.com` no login do sistema com uma senha temporária (que informo no fim e você troca depois).
-2. Atribuir a essa conta o papel **admin** na tabela de papéis.
+## Como exibir os preços sem enfraquecer a segurança
 
-Nenhuma função de segurança (`has_role`, `is_admin`, `can_edit`) nem política existente será alterada.
+As tabelas de revenda continuam privadas no banco (RLS intacta, nada de `is_public = true`, nada de política nova para anônimo). Em vez disso, o servidor faz a leitura controlada:
 
-## Parte A — Login e proteção
+- Amplio `loadQuoteCatalog` (server-only) para, dentro do handler, carregar as duas tabelas de revenda com o cliente privilegiado do servidor e retornar **apenas** `{ product_id, price, quote_unit }` dos sabores publicados.
+- Nada de chave privilegiada no navegador; o cliente recebe só o número de exibição. Fechar os preços no futuro = remover esse bloco do loader.
 
-- `/admin/login`: formulário e-mail + senha (Supabase Auth), erros amigáveis, redireciona para `/admin` ao entrar. Rota pública, `noindex`.
-- `/admin` como rota-mãe protegida (layout sem renderização no servidor, para ler a sessão do navegador):
-  - sem sessão → redireciona para `/admin/login`;
-  - com sessão mas sem papel admin/editor → tela "Acesso não autorizado" + botão sair, sem carregar dado nenhum;
-  - com papel → libera o conteúdo.
-- Verificação de papel via a função de permissão já existente no banco, chamada como o usuário autenticado.
-- Layout admin: barra lateral com **Preços** (ativo) e **Pedidos** / **Produtos** marcados como "em breve", cabeçalho com e-mail do usuário e botão Sair (limpa cache e volta ao login).
-- Rotas admin ficam fora da navegação pública e com `noindex`.
+## Página `/orcamento`
 
-## Parte B — `/admin/precos`
+Cabeçalho com as condições visíveis desde o início (mínimo 1.000 unidades no total, 200 por sabor, passo 50 para fritos).
 
-- Seletor/abas com as 3 tabelas: **Varejo**, **Revenda — congelado para fritar**, **Revenda — congelado para assar**.
-- Lista organizada pelos 15 grupos: cabeçalho com o nome do grupo e o rótulo da unidade de cotação (pacote de 50 / unidade); abaixo, cada sabor com seu `flavor_name` e um campo de preço em R$.
-- Campo vazio quando não há preço para aquele par sabor+tabela; ao salvar, cria o registro.
-- Validação: número ≥ 0, com centavos; valor inválido bloqueia o salvamento com aviso no campo.
-- Botão **Salvar** por grupo e um **Salvar tudo** fixo no rodapé; grava só o que mudou.
-- Histórico continua sendo gravado automaticamente pelo gatilho existente — nada de novo aí.
-- Confirmações e erros via toast (sonner).
+Catálogo:
+- Busca por nome de grupo ou sabor.
+- Agrupado por categoria (fritos / assados); cada grupo é um bloco expansível com seus sabores.
+- Por sabor: nome, preço de revenda com rótulo ("/ pacote de 50" ou "/ unidade") e controle de quantidade (+/− e input) com passo correto.
 
-## Detalhes técnicos
+Cálculo (regra crítica):
+- `pacote_50`: subtotal = (quantidade ÷ 50) × preço do pacote.
+- `unidade`: subtotal = quantidade × preço.
+- Exibe subtotal por sabor, por grupo e total geral, sempre rotulado como "valor estimado, sujeito a confirmação".
 
-- Rotas novas: `src/routes/admin/route.tsx` (gate, `ssr: false`), `src/routes/admin/index.tsx` (redireciona para preços), `src/routes/admin/login.tsx`, `src/routes/admin/precos.tsx`, além de `src/components/admin/*` (shell, sidebar, editor de preços).
-- Leituras e escritas via cliente Supabase do navegador, como o usuário autenticado — RLS continua sendo a defesa real. Sem service role no cliente.
-- Upsert em `product_prices` por (`product_id`, `price_table_id`), em lote por grupo.
-- shadcn/ui já existente (input, button, tabs, table, card) + `sonner`. Componentes `ui` que faltarem serão adicionados isoladamente, sem tocar em tokens, design system ou páginas públicas.
-- Nenhuma alteração em loaders/server functions públicos nem em migrações de segurança.
+Validação bloqueante:
+- Sabor com quantidade > 0 precisa de ≥ 200; aviso inline "mínimo 200".
+- Passo forçado: fritos múltiplos de 50; assados inteiros.
+- Botão de envio desabilitado enquanto o total < 1.000, com aviso do quanto falta.
+- Envia só sabores com quantidade > 0, respeitando o limite de 200 itens.
 
-## Entrega final
+Resumo: painel lateral fixo no desktop, seção final no mobile — itens agrupados, subtotais, total estimado, contador de unidades e status do mínimo.
 
-Login funcional, `/admin` protegida por sessão + papel, sua conta com papel admin (com a senha temporária informada) e a tela de preços operando sobre as 3 tabelas.
+Formulário: Nome*, Telefone/WhatsApp*, Empresa/buffet, Cidade, Tipo de operação (buffet, casa de festa, revenda, outro), observações. Validação com Zod.
+
+Dois envios:
+- "Enviar solicitação" → `submitQuote`, toast de sucesso, estado de confirmação e `clear()` do carrinho.
+- "Enviar pelo WhatsApp" → grava via `submitQuote` primeiro e depois abre `whatsappLink()` com a mensagem legível (dados + sabores/quantidades + total estimado).
+
+## Técnico
+
+- Persistência das escolhas em `useQuoteCart` (localStorage), usando `hydrated` para evitar mismatch de SSR.
+- `head()` com título "Orçamento de atacado — Salgadjén", description e canonical `/orcamento`.
+- Componentes e tokens existentes (`Section`, `SectionHeading`, `Reveal`, `buttonVariants`, inputs shadcn/ui); mobile-first; respeita `prefers-reduced-motion`.
+- Arquivos: novo `src/routes/orcamento.tsx` (+ componentes auxiliares se ficar extenso) e ajuste pontual em `src/lib/site.server.ts` / `site.functions.ts` para os preços de revenda.
+- Sem mudanças no design system, em migrações de segurança ou nas demais páginas públicas.
+
+## Observação
+
+As rotas `/produtos` e `/conteudos` também não existem ainda e continuam 404 — fora do escopo desta etapa, posso fazê-las em seguida.
