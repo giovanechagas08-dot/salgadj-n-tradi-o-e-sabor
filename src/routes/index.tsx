@@ -177,7 +177,7 @@ function HomePage() {
 
       {/* 5 — Diferenciais */}
       {diferenciais && differentials.length ? (
-        <Section tone="purple">
+        <Section tone="purple" rhythm="sm">
           <SectionHeading
             eyebrow={diferenciais.eyebrow ?? undefined}
             title={diferenciais.title}
