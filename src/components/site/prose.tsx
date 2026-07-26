@@ -1,4 +1,12 @@
-export function Prose({ text, invert }: { text?: string | null; invert?: boolean }) {
+export function Prose({
+  text,
+  invert,
+  size = "lg",
+}: {
+  text?: string | null;
+  invert?: boolean;
+  size?: "md" | "lg";
+}) {
   if (!text) return null;
   const paragraphs = text.split(/\n{2,}|\\n\\n/).filter(Boolean);
   return (
@@ -6,11 +14,11 @@ export function Prose({ text, invert }: { text?: string | null; invert?: boolean
       {paragraphs.map((p, i) => (
         <p
           key={i}
-          className={
-            invert
-              ? "text-base leading-relaxed text-brand-cream/80 md:text-lg"
-              : "text-base leading-relaxed text-muted-foreground md:text-lg"
-          }
+          className={[
+            size === "lg" ? "type-body-lg" : "type-body",
+            invert ? "text-brand-cream/80" : "text-muted-foreground",
+            "max-w-[68ch]",
+          ].join(" ")}
         >
           {p.replace(/\\n/g, " ").trim()}
         </p>
