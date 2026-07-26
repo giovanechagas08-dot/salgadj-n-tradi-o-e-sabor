@@ -1,38 +1,44 @@
-## Problema
+## Situação atual (verificada)
 
-O cabeçalho hoje exibe 9 links de nível 1 ("A Salgadjén, História, Estrutura, Processos, Parceiros, Grandes Eventos, Produtos, Galeria, Conteúdos") mais botão WhatsApp e botão de orçamento. Em 1070px isso quebra em duas linhas e compete com o logo — sensação de poluição.
+- Existem hoje `src/routes/estrutura.tsx` e `src/routes/processos.tsx`. **Não existe** `src/routes/grandes-eventos.tsx` (a rota nunca foi criada) — nada a apagar ali.
+- A home não tem seções escritas à mão: ela renderiza dinamicamente as 10 seções vindas do banco (`home_sections`), na ordem: experiência, história, quem-somos, estrutura, processos, diferenciais, parceiros, grandes-eventos, produtos, tabela. Somando hero, números, grid de parceiros, depoimentos e CTA final, chega-se às 14 seções.
+- Os bugs relatados têm origem nessa lista: "parceiros" aparece como seção do banco **e** como grid de parceiros; "produtos" e "tabela" são duas seções seguidas de mesmo tom claro (daí a sensação de parágrafos sobrepostos); e o grid de diferenciais renderiza **todos** os registros do banco, sem limite de 6.
+- Links para as rotas removidas: `src/lib/brand.ts` (menu), `src/routes/quem-somos.tsx` (CTA "Ver nossa estrutura" → /estrutura), `src/routes/estrutura.tsx` (→ /processos), `src/routes/processos.tsx` (→ /diferenciais), e os CTAs das seções do banco na home.
 
-## Solução: hierarquia em dois níveis
+Observação (fora do escopo, só para você saber): rotas como `/produtos`, `/orcamento`, `/contato`, `/conteudos` e `/tabela-de-valores` ainda não existem no projeto — links para elas continuarão dando 404 até serem construídas. Não vou mexer nisso agora.
 
-Menu principal reduzido a 4 itens, sendo um com submenu:
+## O que será feito
 
-```text
-Salgadjén     A Salgadjén ▾    Produtos    Galeria    Conteúdos     [ Solicitar orçamento ]
+**1. Remover as páginas**
+- Apagar `src/routes/estrutura.tsx` e `src/routes/processos.tsx`; a árvore de rotas é regenerada automaticamente pelo plugin do router.
+- Server functions e loaders (`getEstrutura`, `getProcessos`) permanecem intactos, sem uso.
 
-              └ submenu "A Salgadjén":
-                História · Estrutura · Processos · Parceiros · Grandes Eventos
-```
+**2. Zerar links quebrados**
+- `src/lib/brand.ts`: menu "A Salgadjén" passa a ter apenas Quem somos, História e Parceiros (com as descrições indicadas). O footer usa a mesma constante, então se atualiza sozinho.
+- `src/routes/quem-somos.tsx`: o bloco final que aponta para `/estrutura` passa a apontar para `/parceiros` ("Ver os cases"), mantendo o encadeamento narrativo.
+- Home: as seções de estrutura, processos e grandes-eventos deixam de ser renderizadas (ver abaixo), eliminando os CTAs correspondentes.
+- Varredura final para confirmar zero ocorrências de `/estrutura`, `/processos` e `/grandes-eventos`.
 
-- Submenu em painel único (dropdown ancorado, abre no hover/foco e no clique), com título curto + descrição de uma linha em cada item, no ritmo do Design System (cartão `surface-raised`, `shadow-raised`, raio 0.75rem, animação discreta e respeitando `prefers-reduced-motion`).
-- Item "A Salgadjén" fica marcado como ativo quando qualquer rota filha estiver aberta.
+**3. Enxugar a home (`src/routes/index.tsx`)**
 
-## Enxugar os elementos à direita
+Passa a renderizar exatamente 8 seções, filtrando as seções do banco por uma lista permitida no próprio componente (sem alterar banco nem server functions):
 
-- Remover o botão "WhatsApp" do cabeçalho: ele duplica um caminho já disponível no botão flutuante e no rodapé. Sobra um único CTA — "Solicitar orçamento" —, o que reforça a conversão principal.
-- CTA visível a partir de `sm`; abaixo disso, ele aparece no menu mobile.
+1. Hero — inalterado
+2. Números — 4 stats
+3. Experiência — seção `experiencia` + link para /experiencia
+4. História — seção `historia` com timeline limitada a **4** marcos + link para /historia
+5. Diferenciais — seção `diferenciais` com no máximo **6** itens, numerados sequencialmente 01–06 pela posição
+6. Parceiros / prova social — **apenas** o bloco de 3 depoimentos, com link "Ver cases →" para /parceiros (o grid de cards de parceiros e a seção `parceiros` do banco saem)
+7. Produtos — um único bloco, com um só parágrafo, e dois CTAs: "Ver produtos →" e "Tabela de valores →" (funde as seções `produtos` e `tabela`, o que resolve a sobreposição)
+8. CTA final amarelo — inalterado
 
-## Respiro visual
+Saem da home: quem-somos, estrutura, processos, grandes-eventos, grid de parceiros e a seção duplicada de tabela.
 
-- Aumentar o gap entre logo e nav, alinhar tudo em uma linha só com `min-w-0` no bloco de navegação para nunca quebrar.
-- Baixar o breakpoint da navegação desktop de `xl` para `lg` (com 4 itens ela cabe folgada), reduzindo o alcance do menu hambúrguer.
-- Manter o comportamento atual de transparência → creme no scroll, apenas com padding levemente menor no estado fixo.
-
-## Mobile
-
-O painel mobile passa a espelhar a mesma hierarquia: bloco "A Salgadjén" com os 5 subitens recuados, depois Produtos, Galeria, Conteúdos, e por fim WhatsApp + Solicitar orçamento.
+O `head()` de SEO da home fica exatamente como está.
 
 ## Detalhes técnicos
 
-- `src/lib/brand.ts`: reestruturar `NAV` para suportar `children` (rota + label + descrição curta). Manter export de uma lista achatada para o rodapé/sitemap, evitando qualquer regressão em SEO ou links internos.
-- `src/components/site/site-header.tsx`: renderizar nav de dois níveis; dropdown acessível (`aria-expanded`, `aria-haspopup`, navegação por teclado, fecha com Esc e ao trocar de rota).
-- Sem mudanças em backend, dados ou rotas — apenas apresentação e navegação.
+- A filtragem usa um mapa de slugs permitidos (`experiencia`, `historia`, `diferenciais`) mais um render dedicado para o bloco de produtos que lê as seções `produtos`/`tabela` do banco apenas para título e labels de CTA; nada é hardcoded que já venha do CMS.
+- `differentials.slice(0, 6)` com índice de posição para a numeração; `timeline.slice(0, 4)`.
+- Imports não usados (`eventosImg`, `producaoImg`, `partners`) são removidos, e o mapa `SECTION_IMAGES` fica só com `historia`.
+- Continuam sendo usados os componentes canônicos `Section`, `SectionHeading`, `Reveal`, `buttonVariants`. Nenhuma mudança em `src/styles.css`, tokens, componentes base ou migrações.
