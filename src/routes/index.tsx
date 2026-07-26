@@ -134,8 +134,8 @@ function HomePage() {
 
       {/* 4 — História */}
       {historia ? (
-        <Section tone="purple">
-          <div className="grid gap-16 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+        <Section tone="purple" rhythm="sm">
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             <div>
               <SectionHeading
                 eyebrow={historia.eyebrow ?? undefined}
@@ -146,18 +146,6 @@ function HomePage() {
               <div className="mt-10">
                 <SectionLink href="/historia" label="Nossa linha do tempo" invert />
               </div>
-              <Reveal delay={0.1} className="mt-12 hidden lg:block">
-                <div className="overflow-hidden rounded-3xl">
-                  <img
-                    src={historia.image_url || historiaImg}
-                    alt={historia.title}
-                    width={1600}
-                    height={1088}
-                    loading="lazy"
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                </div>
-              </Reveal>
             </div>
             <ol className="relative border-l border-brand-cream/20 pl-8">
               {timeline.slice(0, 4).map((event, i) => (
@@ -172,12 +160,24 @@ function HomePage() {
               ))}
             </ol>
           </div>
+          <Reveal delay={0.1} className="mt-12">
+            <div className="overflow-hidden rounded-3xl">
+              <img
+                src={historia.image_url || historiaImg}
+                alt={historia.title}
+                width={1600}
+                height={900}
+                loading="lazy"
+                className="aspect-[4/3] w-full object-cover sm:aspect-[16/9]"
+              />
+            </div>
+          </Reveal>
         </Section>
       ) : null}
 
       {/* 5 — Diferenciais */}
       {diferenciais && differentials.length ? (
-        <Section tone="purple">
+        <Section tone="purple" rhythm="sm">
           <SectionHeading
             eyebrow={diferenciais.eyebrow ?? undefined}
             title={diferenciais.title}
