@@ -64,7 +64,7 @@ function ParceirosPage() {
               <Link
                 to="/parceiros/$slug"
                 params={{ slug: partner.slug }}
-                className="group flex h-full flex-col rounded-3xl bg-card p-10 transition-shadow hover:shadow-[0_28px_70px_-45px_rgba(26,15,30,0.65)]"
+                className="group flex h-full flex-col rounded-3xl bg-card p-10 transition-shadow hover:shadow-raised"
               >
                 <p className="eyebrow text-brand-yellow">{partner.segment}</p>
                 <h2 className="mt-4 text-2xl text-brand-purple-deep">{partner.name}</h2>

@@ -8,7 +8,7 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar no WhatsApp"
-      className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-brand-purple px-5 py-3.5 text-sm font-semibold text-brand-cream shadow-[0_18px_40px_-18px_rgba(102,41,120,0.9)] transition-transform hover:scale-105"
+      className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-brand-purple px-5 py-3.5 text-sm font-semibold text-brand-cream shadow-raised transition-transform hover:scale-105"
     >
       <MessageCircle className="size-5" />
       <span className="hidden sm:inline">WhatsApp</span>

@@ -20,7 +20,7 @@ export function SiteHeader() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "bg-brand-cream/95 py-2 shadow-[0_10px_40px_-24px_rgba(26,15,30,0.55)] backdrop-blur"
+          ? "bg-brand-cream/95 py-2 shadow-card backdrop-blur"
           : "bg-transparent py-4",
       )}
     >

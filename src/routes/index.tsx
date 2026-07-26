@@ -64,7 +64,7 @@ function HomePage() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-ink via-brand-ink/80 to-brand-ink/35"
+          className="absolute inset-0 -z-10 overlay-scrim"
         />
 
         <div className="container-page">
@@ -254,7 +254,7 @@ function HomePage() {
                 <Link
                   to="/parceiros/$slug"
                   params={{ slug: partner.slug }}
-                  className="group flex h-full flex-col justify-between rounded-3xl bg-card p-8 transition-shadow hover:shadow-[0_24px_60px_-40px_rgba(26,15,30,0.6)]"
+                  className="group flex h-full flex-col justify-between rounded-3xl bg-card p-8 transition-shadow hover:shadow-raised"
                 >
                   <div>
                     <p className="eyebrow text-brand-yellow">{partner.segment}</p>
