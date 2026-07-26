@@ -126,7 +126,7 @@ function OrcamentoPage() {
 
   const categories = useMemo(() => {
     const term = query.trim().toLowerCase();
-    return (data.categories ?? [])
+    return ((data.categories ?? []) as { id: string; name: string }[])
       .map((cat) => ({
         ...cat,
         groups: groups
