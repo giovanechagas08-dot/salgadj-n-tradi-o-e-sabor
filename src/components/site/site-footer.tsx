@@ -42,11 +42,6 @@ export function SiteFooter() {
                 </li>
               ))}
               <li>
-                <Link to="/galeria" className="text-brand-cream/75 transition-colors hover:text-brand-yellow">
-                  Galeria
-                </Link>
-              </li>
-              <li>
                 <Link
                   to="/tabela-de-valores"
                   className="text-brand-cream/75 transition-colors hover:text-brand-yellow"
