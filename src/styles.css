@@ -2,18 +2,146 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* ==========================================================================
+   SALGADJÉN — DESIGN SYSTEM
+   Fonte única de verdade dos tokens visuais. Documentação: docs/design-system.md
+   Página viva: /design-system
 
-/*
- * Salgadjén — Design System institucional
- * Paleta oficial da marca:
- *   Amarelo   #FFA300
- *   Roxo      #662978
- *   Creme     #FFF0E0
- *   Vinho     #660D3B
- *   Tinta     #1A0F1E
- */
+   Camadas
+   01. Primitivos de marca
+   02. Tokens semânticos
+   03. Mapeamento Tailwind (@theme inline)
+   04. Base
+   05. Tipografia (utilities type-*)
+   06. Layout e ritmo
+   07. Detalhes institucionais
+   08. Movimento e acessibilidade
 
+   Tema único (claro). Não existe tema escuro neste sistema.
+   ========================================================================== */
+
+/* ---------- 01. Primitivos de marca + 02. Tokens semânticos ---------- */
+:root {
+  /* Primitivos — paleta institucional. Nunca usar diretamente em componentes. */
+  --brand-yellow: oklch(0.7856 0.1641 65.3); /* #FFA300 */
+  --brand-yellow-soft: oklch(0.892 0.089 74);
+  --brand-yellow-deep: oklch(0.702 0.155 62);
+  --brand-purple: oklch(0.3951 0.148 313.5); /* #662978 */
+  --brand-purple-deep: oklch(0.286 0.116 313);
+  --brand-purple-soft: oklch(0.912 0.036 313);
+  --brand-cream: oklch(0.9585 0.0234 74); /* #FFF0E0 */
+  --brand-wine: oklch(0.3354 0.128 355); /* #660D3B */
+  --brand-ink: oklch(0.196 0.042 320);
+
+  /* Superfícies */
+  --background: oklch(0.9846 0.0092 74);
+  --foreground: oklch(0.196 0.042 320);
+  --surface: oklch(1 0 0);
+  --surface-foreground: oklch(0.196 0.042 320);
+  --surface-raised: oklch(0.9915 0.0055 74);
+  --surface-inverse: var(--brand-purple-deep);
+  --surface-inverse-foreground: var(--brand-cream);
+
+  --card: var(--surface);
+  --card-foreground: var(--surface-foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--surface-foreground);
+
+  /* Ação primária — roxo institucional: autoridade, navegação, confirmação */
+  --primary: var(--brand-purple);
+  --primary-hover: var(--brand-purple-deep);
+  --primary-foreground: var(--brand-cream);
+  --primary-soft: var(--brand-purple-soft);
+
+  /* Ação secundária — amarelo institucional: destaque, convite, energia */
+  --secondary: var(--brand-yellow);
+  --secondary-hover: var(--brand-yellow-deep);
+  --secondary-foreground: var(--brand-purple-deep);
+  --secondary-soft: var(--brand-yellow-soft);
+
+  /* Apoio */
+  --accent: var(--brand-cream);
+  --accent-foreground: var(--brand-purple);
+  --muted: var(--brand-cream);
+  --muted-foreground: oklch(0.472 0.031 320);
+
+  /* Traço */
+  --border: oklch(0.906 0.021 74);
+  --border-strong: oklch(0.828 0.032 74);
+  --input: oklch(0.906 0.021 74);
+  --ring: var(--brand-purple);
+
+  /* Feedback — uso exclusivamente funcional */
+  --success: oklch(0.512 0.114 155);
+  --success-foreground: oklch(0.9846 0.0092 74);
+  --success-soft: oklch(0.938 0.038 155);
+  --warning: oklch(0.702 0.155 62);
+  --warning-foreground: oklch(0.196 0.042 320);
+  --warning-soft: oklch(0.947 0.055 74);
+  --error: var(--brand-wine);
+  --error-foreground: oklch(0.9846 0.0092 74);
+  --error-soft: oklch(0.941 0.031 355);
+  --info: oklch(0.485 0.098 250);
+  --info-foreground: oklch(0.9846 0.0092 74);
+  --info-soft: oklch(0.938 0.03 250);
+  --destructive: var(--error);
+  --destructive-foreground: var(--error-foreground);
+
+  /* Data viz */
+  --chart-1: var(--brand-yellow);
+  --chart-2: var(--brand-purple);
+  --chart-3: var(--brand-wine);
+  --chart-4: var(--brand-yellow-soft);
+  --chart-5: var(--brand-purple-deep);
+
+  /* Painel administrativo */
+  --sidebar: var(--brand-purple-deep);
+  --sidebar-foreground: var(--brand-cream);
+  --sidebar-primary: var(--brand-yellow);
+  --sidebar-primary-foreground: var(--brand-ink);
+  --sidebar-accent: var(--brand-purple);
+  --sidebar-accent-foreground: var(--brand-cream);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: var(--brand-yellow);
+
+  /* Raio — quatro degraus, nada fora disso */
+  --radius: 0.75rem;
+
+  /* Elevação — quatro sombras oficiais */
+  --shadow-subtle: 0 1px 2px -1px oklch(0.196 0.042 320 / 0.08);
+  --shadow-card: 0 10px 30px -22px oklch(0.196 0.042 320 / 0.55);
+  --shadow-raised: 0 24px 60px -40px oklch(0.196 0.042 320 / 0.6);
+  --shadow-overlay: 0 40px 90px -50px oklch(0.196 0.042 320 / 0.75);
+
+  /* Espaçamento — escala travada */
+  --space-1: 0.25rem; /* 4  */
+  --space-2: 0.5rem; /* 8  */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-20: 5rem; /* 80 */
+  --space-24: 6rem; /* 96 */
+  --space-32: 8rem; /* 128 */
+
+  /* Layout */
+  --container-max: 80rem; /* 1280px */
+  --container-gutter: 1.5rem;
+
+  /* Movimento */
+  --duration-instant: 120ms;
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 560ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ---------- 03. Mapeamento Tailwind ---------- */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -22,26 +150,53 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-surface-inverse-foreground: var(--surface-inverse-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
   --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-soft: var(--secondary-soft);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--warning-soft);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  --color-error-soft: var(--error-soft);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--info-soft);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -56,95 +211,32 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Tokens institucionais */
+  /* Primitivos expostos apenas para superfícies institucionais */
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-yellow-soft: var(--brand-yellow-soft);
+  --color-brand-yellow-deep: var(--brand-yellow-deep);
   --color-brand-purple: var(--brand-purple);
   --color-brand-purple-deep: var(--brand-purple-deep);
+  --color-brand-purple-soft: var(--brand-purple-soft);
   --color-brand-cream: var(--brand-cream);
   --color-brand-wine: var(--brand-wine);
   --color-brand-ink: var(--brand-ink);
 
+  --shadow-subtle: var(--shadow-subtle);
+  --shadow-card: var(--shadow-card);
+  --shadow-raised: var(--shadow-raised);
+  --shadow-overlay: var(--shadow-overlay);
+
   --font-display: "Baloo 2", "Trebuchet MS", sans-serif;
   --font-eyebrow: "Archivo", "Helvetica Neue", sans-serif;
   --font-sans: "Figtree", "Helvetica Neue", sans-serif;
+
+  --ease-standard: var(--ease-standard);
+  --ease-entrance: var(--ease-entrance);
+  --ease-exit: var(--ease-exit);
 }
 
-:root {
-  --radius: 0.75rem;
-
-  --brand-yellow: oklch(0.7856 0.1641 65.3);
-  --brand-yellow-soft: oklch(0.892 0.089 74);
-  --brand-purple: oklch(0.3951 0.148 313.5);
-  --brand-purple-deep: oklch(0.286 0.116 313);
-  --brand-cream: oklch(0.9585 0.0234 74);
-  --brand-wine: oklch(0.3354 0.128 355);
-  --brand-ink: oklch(0.196 0.042 320);
-
-  --background: oklch(0.9846 0.0092 74);
-  --foreground: oklch(0.196 0.042 320);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.196 0.042 320);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.196 0.042 320);
-  --primary: oklch(0.3951 0.148 313.5);
-  --primary-foreground: oklch(0.9846 0.0092 74);
-  --secondary: oklch(0.7856 0.1641 65.3);
-  --secondary-foreground: oklch(0.286 0.116 313);
-  --muted: oklch(0.9585 0.0234 74);
-  --muted-foreground: oklch(0.472 0.031 320);
-  --accent: oklch(0.9585 0.0234 74);
-  --accent-foreground: oklch(0.3951 0.148 313.5);
-  --destructive: oklch(0.3354 0.128 355);
-  --destructive-foreground: oklch(0.9846 0.0092 74);
-  --border: oklch(0.906 0.021 74);
-  --input: oklch(0.906 0.021 74);
-  --ring: oklch(0.3951 0.148 313.5);
-  --chart-1: oklch(0.7856 0.1641 65.3);
-  --chart-2: oklch(0.3951 0.148 313.5);
-  --chart-3: oklch(0.3354 0.128 355);
-  --chart-4: oklch(0.892 0.089 74);
-  --chart-5: oklch(0.286 0.116 313);
-  --sidebar: oklch(0.286 0.116 313);
-  --sidebar-foreground: oklch(0.9846 0.0092 74);
-  --sidebar-primary: oklch(0.7856 0.1641 65.3);
-  --sidebar-primary-foreground: oklch(0.196 0.042 320);
-  --sidebar-accent: oklch(0.3951 0.148 313.5);
-  --sidebar-accent-foreground: oklch(0.9846 0.0092 74);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.7856 0.1641 65.3);
-}
-
-.dark {
-  --background: oklch(0.196 0.042 320);
-  --foreground: oklch(0.9846 0.0092 74);
-  --card: oklch(0.252 0.058 318);
-  --card-foreground: oklch(0.9846 0.0092 74);
-  --popover: oklch(0.252 0.058 318);
-  --popover-foreground: oklch(0.9846 0.0092 74);
-  --primary: oklch(0.7856 0.1641 65.3);
-  --primary-foreground: oklch(0.196 0.042 320);
-  --secondary: oklch(0.3951 0.148 313.5);
-  --secondary-foreground: oklch(0.9846 0.0092 74);
-  --muted: oklch(0.286 0.116 313);
-  --muted-foreground: oklch(0.79 0.03 74);
-  --accent: oklch(0.286 0.116 313);
-  --accent-foreground: oklch(0.9846 0.0092 74);
-  --destructive: oklch(0.55 0.16 20);
-  --destructive-foreground: oklch(0.9846 0.0092 74);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.7856 0.1641 65.3);
-  --sidebar: oklch(0.252 0.058 318);
-  --sidebar-foreground: oklch(0.9846 0.0092 74);
-  --sidebar-primary: oklch(0.7856 0.1641 65.3);
-  --sidebar-primary-foreground: oklch(0.196 0.042 320);
-  --sidebar-accent: oklch(0.3951 0.148 313.5);
-  --sidebar-accent-foreground: oklch(0.9846 0.0092 74);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.7856 0.1641 65.3);
-}
-
+/* ---------- 04. Base ---------- */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -152,40 +244,257 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.015em;
+    text-wrap: balance;
   }
+
+  /* Anel de foco institucional único */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background: var(--brand-yellow);
+    color: var(--brand-purple-deep);
+  }
+}
+
+/* ---------- 05. Tipografia — escala oficial ----------
+   Uso exclusivo destas utilities. Nenhum text-[..] arbitrário. */
+@utility type-hero-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6.2vw, 4.75rem);
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+@utility type-hero {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.8vw, 3.75rem);
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@utility type-display {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  line-height: 1.16;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+}
+
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  line-height: 1.24;
+  font-weight: 700;
+  letter-spacing: -0.014em;
+}
+
+@utility type-h4 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.32;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+@utility type-h5 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.38;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+}
+
+@utility type-h6 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.44;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+@utility type-lead {
+  font-family: var(--font-sans);
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+@utility type-body-lg {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+@utility type-body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+@utility type-body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+@utility type-caption {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+@utility type-label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+@utility type-button {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+@utility type-overline {
+  font-family: var(--font-eyebrow);
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
 }
 
 @utility eyebrow {
   font-family: var(--font-eyebrow);
   font-size: 0.75rem;
+  line-height: 1.3;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
+/* ---------- 06. Layout e ritmo ---------- */
 @utility container-page {
   width: 100%;
   margin-inline: auto;
-  max-width: 80rem;
-  padding-inline: 1.5rem;
+  max-width: var(--container-max);
+  padding-inline: var(--container-gutter);
+
+  @media (min-width: 1024px) {
+    padding-inline: var(--space-10);
+  }
 }
 
+@utility container-narrow {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 48rem;
+  padding-inline: var(--container-gutter);
+}
+
+@utility grid-12 {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+/* Ritmo vertical de seção — três degraus, nada fora disso */
+@utility section-sm {
+  padding-block: var(--space-12);
+
+  @media (min-width: 768px) {
+    padding-block: var(--space-16);
+  }
+}
+
+@utility section-md {
+  padding-block: var(--space-16);
+
+  @media (min-width: 768px) {
+    padding-block: var(--space-20);
+  }
+
+  @media (min-width: 1024px) {
+    padding-block: var(--space-24);
+  }
+}
+
+@utility section-lg {
+  padding-block: var(--space-20);
+
+  @media (min-width: 768px) {
+    padding-block: var(--space-24);
+  }
+
+  @media (min-width: 1024px) {
+    padding-block: var(--space-32);
+  }
+}
+
+/* ---------- 07. Detalhes institucionais ---------- */
 @utility rule-gold {
   &::after {
     content: "";
@@ -194,6 +503,71 @@
     height: 3px;
     border-radius: 999px;
     background: var(--brand-yellow);
-    margin-top: 1.25rem;
+    margin-top: var(--space-6);
+  }
+}
+
+@utility surface-card {
+  background-color: var(--surface);
+  color: var(--surface-foreground);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-card);
+}
+
+@utility link-underline {
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 2px;
+    width: 100%;
+    background: var(--brand-yellow);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@utility overlay-scrim {
+  background: linear-gradient(
+    to top,
+    var(--brand-ink) 0%,
+    color-mix(in oklab, var(--brand-ink) 80%, transparent) 45%,
+    color-mix(in oklab, var(--brand-ink) 35%, transparent) 100%
+  );
+}
+
+@utility overlay-scrim-hero {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--brand-purple-deep) 85%, transparent) 0%,
+    color-mix(in oklab, var(--brand-purple-deep) 70%, transparent) 55%,
+    var(--brand-purple-deep) 100%
+  );
+}
+
+/* ---------- 08. Movimento e acessibilidade ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
