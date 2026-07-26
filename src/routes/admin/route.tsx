@@ -16,13 +16,18 @@ export const Route = createFileRoute("/admin")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  beforeLoad: async () => {
+  beforeLoad: async ({ location }) => {
+    // A rota de login precisa ficar FORA do gate: sem esta exceção o layout
+    // redireciona /admin/login para si mesmo (loop → tela branca).
+    if (location.pathname.startsWith("/admin/login")) {
+      return { user: null, canEdit: false, isLogin: true as const };
+    }
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) {
       throw redirect({ to: "/admin/login" });
     }
     const { data: canEdit } = await supabase.rpc("can_edit", { _user_id: data.user.id });
-    return { user: data.user, canEdit: canEdit === true };
+    return { user: data.user, canEdit: canEdit === true, isLogin: false as const };
   },
   component: AdminLayout,
 });
@@ -34,10 +39,20 @@ const NAV = [
 ];
 
 function AdminLayout() {
-  const { user, canEdit } = Route.useRouteContext();
+  const { user, canEdit, isLogin } = Route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  if (isLogin || !user) {
+    return (
+      <>
+        <Outlet />
+        <Toaster />
+      </>
+    );
+  }
+
 
   async function signOut() {
     await queryClient.cancelQueries();
