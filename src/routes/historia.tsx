@@ -77,9 +77,9 @@ function HistoriaPage() {
           {timeline.map((event, i) => (
             <Reveal key={event.id} delay={i * 0.05}>
               <li className="relative rounded-3xl border border-brand-cream/15 p-8">
-                <p className="font-display text-3xl text-brand-yellow">{event.year}</p>
+                <p className="type-h2 text-brand-yellow">{event.year}</p>
                 <h3 className="mt-3 text-xl text-brand-cream">{event.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-brand-cream/75">
+                <p className="mt-3 type-body-sm text-brand-cream/75">
                   {event.description}
                 </p>
               </li>
@@ -93,7 +93,7 @@ function HistoriaPage() {
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, i) => (
               <Reveal key={stat.id} delay={i * 0.06}>
-                <p className="font-display text-4xl text-brand-purple md:text-5xl">
+                <p className="type-display text-brand-purple">
                   {stat.prefix ?? ""}
                   {stat.value.toLocaleString("pt-BR")}
                   {stat.suffix ?? ""}
@@ -112,7 +112,7 @@ function HistoriaPage() {
         <div className="flex flex-col items-start justify-between gap-8 rounded-3xl bg-brand-purple p-10 md:flex-row md:items-center md:p-14">
           <div>
             <p className="eyebrow text-brand-yellow">Próximo capítulo</p>
-            <h2 className="mt-4 max-w-xl text-2xl text-brand-cream md:text-3xl">
+            <h2 className="type-h2 mt-4 max-w-xl text-brand-cream">
               Quem conduz a empresa hoje.
             </h2>
           </div>

@@ -16,7 +16,7 @@ export function SiteFooter() {
               loading="lazy"
               className="h-12 w-auto"
             />
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-brand-cream/70">
+            <p className="mt-6 max-w-sm type-body-sm text-brand-cream/70">
               Desde {BRAND.founded}, uma empresa familiar dedicada a soluções gastronômicas para
               buffets, casas de festas, empresas e grandes eventos.
             </p>

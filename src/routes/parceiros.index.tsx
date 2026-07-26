@@ -67,14 +67,14 @@ function ParceirosPage() {
                 className="group flex h-full flex-col rounded-3xl bg-card p-10 transition-shadow hover:shadow-raised"
               >
                 <p className="eyebrow text-brand-yellow">{partner.segment}</p>
-                <h2 className="mt-4 text-2xl text-brand-purple-deep">{partner.name}</h2>
+                <h2 className="type-h3 mt-4 text-brand-purple-deep">{partner.name}</h2>
                 <p className="mt-4 flex-1 leading-relaxed text-muted-foreground">
                   {partner.summary}
                 </p>
                 {partner.challenge ? (
                   <div className="mt-8 rounded-2xl bg-background p-6">
                     <p className="eyebrow text-brand-purple/60">Desafio</p>
-                    <p className="mt-3 text-sm leading-relaxed text-brand-purple-deep">
+                    <p className="mt-3 type-body-sm text-brand-purple-deep">
                       {partner.challenge}
                     </p>
                   </div>

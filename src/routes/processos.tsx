@@ -65,11 +65,11 @@ function ProcessosPage() {
           {steps.map((step, i) => (
             <Reveal key={step.id} delay={i * 0.05}>
               <li className="h-full bg-card p-8 md:p-10">
-                <p className="font-display text-4xl text-brand-yellow">
+                <p className="type-display text-brand-yellow">
                   {String(step.step_number).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 text-xl text-brand-purple-deep">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-3 type-body-sm text-muted-foreground">
                   {step.description}
                 </p>
               </li>

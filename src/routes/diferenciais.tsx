@@ -66,7 +66,7 @@ function DiferenciaisPage() {
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 text-xl text-brand-purple-deep">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-3 type-body-sm text-muted-foreground">
                   {item.description}
                 </p>
               </div>
@@ -101,7 +101,7 @@ function DiferenciaisPage() {
 
       <Section tone="white">
         <div className="flex flex-col items-start justify-between gap-8 rounded-3xl bg-brand-yellow p-10 md:flex-row md:items-center md:p-14">
-          <h2 className="max-w-xl text-2xl text-brand-purple-deep md:text-3xl">
+          <h2 className="type-h2 max-w-xl text-brand-purple-deep">
             Veja como isso funciona dentro da operação dos nossos parceiros.
           </h2>
           <Link

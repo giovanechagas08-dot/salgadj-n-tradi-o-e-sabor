@@ -75,10 +75,10 @@ function HomePage() {
             className="max-w-4xl"
           >
             <p className="eyebrow text-brand-yellow">{hero?.eyebrow ?? "Desde 1988"}</p>
-            <h1 className="mt-6 text-4xl leading-[1.03] md:text-6xl lg:text-7xl">
+            <h1 className="type-hero-xl mt-6">
               {hero?.title ?? BRAND.tagline}
             </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-brand-cream/80 md:text-xl">
+            <p className="mt-8 max-w-2xl type-lead text-brand-cream/80 md:text-xl">
               {hero?.subtitle ??
                 "Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos."}
             </p>
@@ -109,7 +109,7 @@ function HomePage() {
           <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
             {stats.slice(0, 4).map((stat, i) => (
               <Reveal key={stat.id} delay={i * 0.08}>
-                <p className="font-display text-4xl text-brand-purple md:text-5xl">
+                <p className="type-display text-brand-purple">
                   {stat.prefix ?? ""}
                   {stat.value.toLocaleString("pt-BR")}
                   {stat.suffix ?? ""}
@@ -147,7 +147,7 @@ function HomePage() {
                         {String(i + 1).padStart(2, "0")}
                       </p>
                       <h3 className="mt-4 text-xl text-brand-cream">{item.title}</h3>
-                      <p className="mt-3 text-sm leading-relaxed text-brand-cream/75">
+                      <p className="mt-3 type-body-sm text-brand-cream/75">
                         {item.description}
                       </p>
                     </div>
@@ -185,9 +185,9 @@ function HomePage() {
                     <Reveal key={event.id} delay={i * 0.06}>
                       <li className="relative pb-10 last:pb-0">
                         <span className="absolute -left-[38px] top-1.5 size-3 rounded-full bg-brand-yellow" />
-                        <p className="font-display text-2xl text-brand-yellow">{event.year}</p>
+                        <p className="type-h3 text-brand-yellow">{event.year}</p>
                         <h3 className="mt-1 text-lg text-brand-cream">{event.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-brand-cream/70">
+                        <p className="mt-2 type-body-sm text-brand-cream/70">
                           {event.description}
                         </p>
                       </li>
@@ -259,7 +259,7 @@ function HomePage() {
                   <div>
                     <p className="eyebrow text-brand-yellow">{partner.segment}</p>
                     <h3 className="mt-4 text-xl text-brand-purple-deep">{partner.name}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-3 type-body-sm text-muted-foreground">
                       {partner.summary}
                     </p>
                   </div>
@@ -308,7 +308,7 @@ function HomePage() {
         <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           <Reveal>
             <p className="eyebrow text-brand-purple-deep/70">Próximo passo</p>
-            <h2 className="mt-5 max-w-2xl text-3xl leading-tight text-brand-purple-deep md:text-5xl">
+            <h2 className="type-display mt-5 max-w-2xl text-brand-purple-deep">
               Conte o que você está organizando. Cuidamos do resto.
             </h2>
           </Reveal>

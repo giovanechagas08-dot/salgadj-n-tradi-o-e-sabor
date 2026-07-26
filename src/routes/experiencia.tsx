@@ -85,7 +85,7 @@ function ExperienciaPage() {
               <div className="h-full rounded-3xl bg-card p-8">
                 <pillar.icon className="size-7 text-brand-yellow" />
                 <h3 className="mt-6 text-xl text-brand-purple-deep">{pillar.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{pillar.text}</p>
+                <p className="mt-3 type-body-sm text-muted-foreground">{pillar.text}</p>
               </div>
             </Reveal>
           ))}
