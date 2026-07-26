@@ -11,10 +11,10 @@ export const BRAND = {
   founded: 1988,
   years: new Date().getFullYear() - 1988,
   tagline: "Há 38 anos fazendo parte dos melhores momentos.",
-  whatsapp: "5511999999999",
-  phone: "(11) 99999-9999",
+  whatsapp: "5521997468686",
+  phone: "(21) 99746-8686 · (21) 99941-6221",
   email: "contato@salgadjen.com.br",
-  city: "São Paulo — SP",
+  city: "Nova Iguaçu — RJ",
 };
 
 export function whatsappLink(message: string, number = BRAND.whatsapp) {
