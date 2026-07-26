@@ -20,6 +20,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
 const QuemSomosRoute = QuemSomosRouteImport.update({
   id: '/quem-somos',
@@ -76,6 +77,11 @@ const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
   path: '/parceiros/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/admin/login': typeof AdminLoginRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/admin/login': typeof AdminLoginRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin': typeof AdminIndexRoute
   '/parceiros': typeof ParceirosIndexRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
+  '/admin/login': typeof AdminLoginRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/galeria'
     | '/historia'
     | '/quem-somos'
+    | '/admin/login'
     | '/parceiros/$slug'
     | '/admin/'
     | '/parceiros/'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/galeria'
     | '/historia'
     | '/quem-somos'
+    | '/admin/login'
     | '/parceiros/$slug'
     | '/admin'
     | '/parceiros'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/galeria'
     | '/historia'
     | '/quem-somos'
+    | '/admin/login'
     | '/parceiros/$slug'
     | '/admin/'
     | '/parceiros/'
@@ -249,14 +261,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParceirosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
 interface AdminRouteRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
