@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/button";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { motion } from "motion/react";
@@ -85,7 +86,7 @@ function HomePage() {
             <div className="mt-12 flex flex-wrap gap-4">
               <Link
                 to="/orcamento"
-                className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-7 py-4 text-sm font-semibold text-brand-purple-deep transition-transform hover:scale-[1.03]"
+                className={buttonVariants({ variant: "secondary", size: "xl" })}
               >
                 {hero?.primary_cta_label ?? "Solicitar orçamento"}
                 <ArrowRight className="size-4" />
@@ -94,7 +95,7 @@ function HomePage() {
                 href={whatsappLink(`Olá! Gostaria de falar com a ${BRAND.name}.`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full border border-brand-cream/35 px-7 py-4 text-sm font-medium text-brand-cream transition-colors hover:border-brand-yellow hover:text-brand-yellow"
+                className={buttonVariants({ variant: "inverse", size: "xl" })}
               >
                 {hero?.secondary_cta_label ?? "Falar no WhatsApp"}
               </a>
@@ -315,14 +316,14 @@ function HomePage() {
           <Reveal delay={0.1} className="flex flex-wrap gap-4 lg:justify-end">
             <Link
               to="/orcamento"
-              className="inline-flex items-center gap-2 rounded-full bg-brand-purple px-7 py-4 text-sm font-semibold text-brand-cream transition-transform hover:scale-[1.03]"
+              className={buttonVariants({ variant: "primary", size: "xl" })}
             >
               Montar meu orçamento
               <ArrowRight className="size-4" />
             </Link>
             <Link
               to="/contato"
-              className="inline-flex items-center rounded-full border border-brand-purple-deep/30 px-7 py-4 text-sm font-medium text-brand-purple-deep transition-colors hover:bg-brand-purple-deep hover:text-brand-cream"
+              className={buttonVariants({ variant: "outline", size: "xl" })}
             >
               Falar com a equipe
             </Link>

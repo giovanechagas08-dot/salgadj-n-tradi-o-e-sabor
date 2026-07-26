@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { BRAND, LOGO_LIGHT, NAV, whatsappLink } from "@/lib/brand";
@@ -24,7 +25,7 @@ export function SiteFooter() {
               href={whatsappLink(`Olá! Gostaria de solicitar um orçamento com a ${BRAND.name}.`)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex rounded-full bg-brand-yellow px-6 py-3 text-sm font-semibold text-brand-purple-deep"
+              className={buttonVariants({ variant: "secondary", size: "lg", className: "mt-8" })}
             >
               Falar com um consultor
             </a>
@@ -78,7 +79,7 @@ export function SiteFooter() {
             </ul>
             <Link
               to="/contato"
-              className="mt-8 inline-flex rounded-full border border-brand-cream/30 px-5 py-2.5 text-sm font-medium text-brand-cream transition-colors hover:border-brand-yellow hover:text-brand-yellow"
+              className={buttonVariants({ variant: "inverse", size: "md", className: "mt-8" })}
             >
               Página de contato
             </Link>
