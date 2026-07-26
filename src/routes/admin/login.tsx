@@ -1,5 +1,5 @@
-import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,6 @@ export const Route = createFileRoute("/admin/login")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (data.user) throw redirect({ to: "/admin/precos" });
-  },
   component: AdminLogin,
 });
 
@@ -27,6 +23,23 @@ function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Checagem de sessão não bloqueia o render do formulário.
+  useEffect(() => {
+    let active = true;
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (active && data.session) navigate({ to: "/admin/precos", replace: true });
+      })
+      .catch(() => {
+        /* sem sessão válida: mantém o formulário */
+      });
+    return () => {
+      active = false;
+    };
+  }, [navigate]);
+
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
