@@ -9,7 +9,7 @@ import { Reveal } from "@/components/site/reveal";
 import { Section, SectionHeading } from "@/components/site/section";
 import { cn } from "@/lib/utils";
 import heroImg from "@/assets/hero-momentos.jpg";
-import historiaImg from "@/assets/historia.jpg";
+
 
 const homeQuery = queryOptions({
   queryKey: ["home"],
