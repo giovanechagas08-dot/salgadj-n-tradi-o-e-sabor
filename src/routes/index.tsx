@@ -9,7 +9,7 @@ import { Reveal } from "@/components/site/reveal";
 import { Section, SectionHeading } from "@/components/site/section";
 import { cn } from "@/lib/utils";
 import heroImg from "@/assets/hero-momentos.jpg";
-import historiaImg from "@/assets/historia.jpg";
+
 
 const homeQuery = queryOptions({
   queryKey: ["home"],
@@ -160,18 +160,6 @@ function HomePage() {
               ))}
             </ol>
           </div>
-          <Reveal delay={0.1} className="mt-12">
-            <div className="overflow-hidden rounded-3xl">
-              <img
-                src={historia.image_url || historiaImg}
-                alt={historia.title}
-                width={1600}
-                height={900}
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover sm:aspect-[16/9]"
-              />
-            </div>
-          </Reveal>
         </Section>
       ) : null}
 
