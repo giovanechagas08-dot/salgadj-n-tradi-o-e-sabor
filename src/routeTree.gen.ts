@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as QuemSomosRouteImport } from './routes/quem-somos'
 import { Route as ProcessosRouteImport } from './routes/processos'
 import { Route as HistoriaRouteImport } from './routes/historia'
+import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
 import { Route as EstruturaRouteImport } from './routes/estrutura'
 import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
@@ -32,6 +33,11 @@ const ProcessosRoute = ProcessosRouteImport.update({
 const HistoriaRoute = HistoriaRouteImport.update({
   id: '/historia',
   path: '/historia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GaleriaRoute = GaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperienciaRoute = ExperienciaRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/diferenciais': typeof DiferenciaisRoute
   '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
+  '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/diferenciais': typeof DiferenciaisRoute
   '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
+  '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/diferenciais': typeof DiferenciaisRoute
   '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
+  '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
   '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/diferenciais'
     | '/estrutura'
     | '/experiencia'
+    | '/galeria'
     | '/historia'
     | '/processos'
     | '/quem-somos'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/diferenciais'
     | '/estrutura'
     | '/experiencia'
+    | '/galeria'
     | '/historia'
     | '/processos'
     | '/quem-somos'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/diferenciais'
     | '/estrutura'
     | '/experiencia'
+    | '/galeria'
     | '/historia'
     | '/processos'
     | '/quem-somos'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   DiferenciaisRoute: typeof DiferenciaisRoute
   EstruturaRoute: typeof EstruturaRoute
   ExperienciaRoute: typeof ExperienciaRoute
+  GaleriaRoute: typeof GaleriaRoute
   HistoriaRoute: typeof HistoriaRoute
   ProcessosRoute: typeof ProcessosRoute
   QuemSomosRoute: typeof QuemSomosRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/historia'
       fullPath: '/historia'
       preLoaderRoute: typeof HistoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/galeria': {
+      id: '/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof GaleriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experiencia': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiferenciaisRoute: DiferenciaisRoute,
   EstruturaRoute: EstruturaRoute,
   ExperienciaRoute: ExperienciaRoute,
+  GaleriaRoute: GaleriaRoute,
   HistoriaRoute: HistoriaRoute,
   ProcessosRoute: ProcessosRoute,
   QuemSomosRoute: QuemSomosRoute,

@@ -29,5 +29,6 @@ export const NAV = [
   { label: "Parceiros", to: "/parceiros" as const },
   { label: "Grandes Eventos", to: "/grandes-eventos" as const },
   { label: "Produtos", to: "/produtos" as const },
+  { label: "Galeria", to: "/galeria" as const },
   { label: "Conteúdos", to: "/conteudos" as const },
 ];
