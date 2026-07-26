@@ -10,8 +10,6 @@ import { Section, SectionHeading } from "@/components/site/section";
 import { cn } from "@/lib/utils";
 import heroImg from "@/assets/hero-momentos.jpg";
 import historiaImg from "@/assets/historia.jpg";
-import producaoImg from "@/assets/producao.jpg";
-import eventosImg from "@/assets/grandes-eventos.jpg";
 
 const homeQuery = queryOptions({
   queryKey: ["home"],
@@ -41,20 +39,19 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const SECTION_IMAGES: Record<string, string> = {
-  historia: historiaImg,
-  processos: producaoImg,
-  "grandes-eventos": eventosImg,
-  estrutura: producaoImg,
-};
-
 function HomePage() {
   const { data } = useSuspenseQuery(homeQuery);
-  const { hero, sections, stats, differentials, timeline, partners, testimonials } = data;
+  const { hero, sections, stats, differentials, timeline, testimonials } = data;
+
+  const bySlug = (slug: string) => sections.find((s) => s.slug === slug);
+  const experiencia = bySlug("experiencia");
+  const historia = bySlug("historia");
+  const diferenciais = bySlug("diferenciais");
+  const produtos = bySlug("produtos");
 
   return (
     <>
-      {/* Capítulo 0 — abertura */}
+      {/* 1 — Hero */}
       <section className="relative isolate flex min-h-[92vh] items-end overflow-hidden bg-brand-ink pb-20 pt-40 text-brand-cream">
         <img
           src={hero?.image_url || heroImg}
@@ -63,10 +60,7 @@ function HomePage() {
           height={1280}
           className="absolute inset-0 -z-10 size-full object-cover"
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 overlay-scrim"
-        />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 overlay-scrim" />
 
         <div className="container-page">
           <motion.div
@@ -76,18 +70,13 @@ function HomePage() {
             className="max-w-4xl"
           >
             <p className="eyebrow text-brand-yellow">{hero?.eyebrow ?? "Desde 1988"}</p>
-            <h1 className="type-hero-xl mt-6">
-              {hero?.title ?? BRAND.tagline}
-            </h1>
+            <h1 className="type-hero-xl mt-6">{hero?.title ?? BRAND.tagline}</h1>
             <p className="mt-8 max-w-2xl type-lead text-brand-cream/80 md:text-xl">
               {hero?.subtitle ??
                 "Soluções gastronômicas para buffets, casas de festas, empresas e grandes eventos."}
             </p>
             <div className="mt-12 flex flex-wrap gap-4">
-              <Link
-                to="/orcamento"
-                className={buttonVariants({ variant: "secondary", size: "xl" })}
-              >
+              <Link to="/orcamento" className={buttonVariants({ variant: "secondary", size: "xl" })}>
                 {hero?.primary_cta_label ?? "Solicitar orçamento"}
                 <ArrowRight className="size-4" />
               </Link>
@@ -104,7 +93,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Números */}
+      {/* 2 — Números */}
       {stats.length ? (
         <section className="border-y border-border bg-card">
           <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -125,168 +114,107 @@ function HomePage() {
         </section>
       ) : null}
 
-      {/* Capítulos narrativos */}
-      {sections.map((section, index) => {
-        const image = section.image_url || SECTION_IMAGES[section.slug];
-        const purple = section.variant === "purple";
-        const flipped = index % 2 === 1;
-
-        if (section.slug === "diferenciais" && differentials.length) {
-          return (
-            <Section key={section.id} tone="purple">
+      {/* 3 — Experiência */}
+      {experiencia ? (
+        <Section tone="white">
+          <div className="grid items-center gap-14 lg:grid-cols-[1fr_auto] lg:gap-20">
+            <div>
               <SectionHeading
-                eyebrow={section.eyebrow ?? undefined}
-                title={section.title}
-                description={section.subtitle}
-                invert
+                eyebrow={experiencia.eyebrow ?? undefined}
+                title={experiencia.title}
+                description={experiencia.body ?? experiencia.subtitle}
               />
-              <div className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-brand-cream/15 sm:grid-cols-2 lg:grid-cols-3">
-                {differentials.map((item, i) => (
-                  <Reveal key={item.id} delay={i * 0.05}>
-                    <div className="h-full bg-brand-purple p-8">
-                      <p className="font-display text-lg text-brand-yellow">
-                        {String(i + 1).padStart(2, "0")}
-                      </p>
-                      <h3 className="mt-4 text-xl text-brand-cream">{item.title}</h3>
-                      <p className="mt-3 type-body-sm text-brand-cream/75">
-                        {item.description}
-                      </p>
-                    </div>
-                  </Reveal>
-                ))}
+              <div className="mt-10">
+                <SectionLink href="/experiencia" label="A experiência Salgadjén" />
               </div>
-              {section.cta_href ? (
-                <div className="mt-12">
-                  <SectionLink href={section.cta_href} label={section.cta_label} invert />
-                </div>
-              ) : null}
-            </Section>
-          );
-        }
-
-        if (section.slug === "historia" && timeline.length) {
-          return (
-            <Section key={section.id} tone="purple">
-              <div className="grid gap-16 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-                <div>
-                  <SectionHeading
-                    eyebrow={section.eyebrow ?? undefined}
-                    title={section.title}
-                    description={section.body}
-                    invert
-                  />
-                  {section.cta_href ? (
-                    <div className="mt-10">
-                      <SectionLink href={section.cta_href} label={section.cta_label} invert />
-                    </div>
-                  ) : null}
-                </div>
-                <ol className="relative border-l border-brand-cream/20 pl-8">
-                  {timeline.slice(0, 5).map((event, i) => (
-                    <Reveal key={event.id} delay={i * 0.06}>
-                      <li className="relative pb-10 last:pb-0">
-                        <span className="absolute -left-[38px] top-1.5 size-3 rounded-full bg-brand-yellow" />
-                        <p className="type-h3 text-brand-yellow">{event.year}</p>
-                        <h3 className="mt-1 text-lg text-brand-cream">{event.title}</h3>
-                        <p className="mt-2 type-body-sm text-brand-cream/70">
-                          {event.description}
-                        </p>
-                      </li>
-                    </Reveal>
-                  ))}
-                </ol>
-              </div>
-            </Section>
-          );
-        }
-
-        return (
-          <Section key={section.id} tone={purple ? "purple" : section.variant === "cream" ? "cream" : "white"}>
-            <div
-              className={cn(
-                "grid items-center gap-14",
-                image ? "lg:grid-cols-2 lg:gap-20" : "lg:grid-cols-[1fr_auto]",
-              )}
-            >
-              <div className={cn(image && flipped && "lg:order-2")}>
-                <SectionHeading
-                  eyebrow={section.eyebrow ?? undefined}
-                  title={section.title}
-                  description={section.body ?? section.subtitle}
-                  invert={purple}
-                />
-                {section.cta_href ? (
-                  <div className="mt-10">
-                    <SectionLink href={section.cta_href} label={section.cta_label} invert={purple} />
-                  </div>
-                ) : null}
-              </div>
-
-              {image ? (
-                <Reveal delay={0.1} className={cn(flipped && "lg:order-1")}>
-                  <div className="overflow-hidden rounded-3xl">
-                    <img
-                      src={image}
-                      alt={section.title}
-                      width={1600}
-                      height={1088}
-                      loading="lazy"
-                      className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-105"
-                    />
-                  </div>
-                </Reveal>
-              ) : null}
             </div>
-          </Section>
-        );
-      })}
-
-      {/* Parceiros */}
-      {partners.length ? (
-        <Section tone="cream">
-          <SectionHeading
-            eyebrow="Parceiros"
-            title="Operações que dependem de constância"
-            description="Buffets, casas de festas e empresas que integraram a Salgadjén à própria operação."
-          />
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {partners.slice(0, 6).map((partner, i) => (
-              <Reveal key={partner.id} delay={i * 0.06}>
-                <Link
-                  to="/parceiros/$slug"
-                  params={{ slug: partner.slug }}
-                  className="group flex h-full flex-col justify-between rounded-3xl bg-card p-8 transition-shadow hover:shadow-raised"
-                >
-                  <div>
-                    <p className="eyebrow text-brand-yellow">{partner.segment}</p>
-                    <h3 className="mt-4 text-xl text-brand-purple-deep">{partner.name}</h3>
-                    <p className="mt-3 type-body-sm text-muted-foreground">
-                      {partner.summary}
-                    </p>
-                  </div>
-                  <span className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-brand-purple">
-                    Ver o case
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
           </div>
         </Section>
       ) : null}
 
-      {/* Depoimentos */}
-      {testimonials.length ? (
-        <Section tone="white">
+      {/* 4 — História */}
+      {historia ? (
+        <Section tone="purple">
+          <div className="grid gap-16 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+            <div>
+              <SectionHeading
+                eyebrow={historia.eyebrow ?? undefined}
+                title={historia.title}
+                description={historia.body ?? historia.subtitle}
+                invert
+              />
+              <div className="mt-10">
+                <SectionLink href="/historia" label="Nossa linha do tempo" invert />
+              </div>
+              <Reveal delay={0.1} className="mt-12 hidden lg:block">
+                <div className="overflow-hidden rounded-3xl">
+                  <img
+                    src={historia.image_url || historiaImg}
+                    alt={historia.title}
+                    width={1600}
+                    height={1088}
+                    loading="lazy"
+                    className="aspect-[4/3] w-full object-cover"
+                  />
+                </div>
+              </Reveal>
+            </div>
+            <ol className="relative border-l border-brand-cream/20 pl-8">
+              {timeline.slice(0, 4).map((event, i) => (
+                <Reveal key={event.id} delay={i * 0.06}>
+                  <li className="relative pb-10 last:pb-0">
+                    <span className="absolute -left-[38px] top-1.5 size-3 rounded-full bg-brand-yellow" />
+                    <p className="type-h3 text-brand-yellow">{event.year}</p>
+                    <h3 className="mt-1 text-lg text-brand-cream">{event.title}</h3>
+                    <p className="mt-2 type-body-sm text-brand-cream/70">{event.description}</p>
+                  </li>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* 5 — Diferenciais */}
+      {diferenciais && differentials.length ? (
+        <Section tone="purple">
           <SectionHeading
-            eyebrow="Depoimentos"
-            title="A confiança de quem organiza"
+            eyebrow={diferenciais.eyebrow ?? undefined}
+            title={diferenciais.title}
+            description={diferenciais.subtitle}
+            invert
+          />
+          <div className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-brand-cream/15 sm:grid-cols-2 lg:grid-cols-3">
+            {differentials.slice(0, 6).map((item, i) => (
+              <Reveal key={item.id} delay={i * 0.05}>
+                <div className="h-full bg-brand-purple p-8">
+                  <p className="font-display text-lg text-brand-yellow">
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-4 text-xl text-brand-cream">{item.title}</h3>
+                  <p className="mt-3 type-body-sm text-brand-cream/75">{item.description}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-12">
+            <SectionLink href="/diferenciais" label="Nossos diferenciais" invert />
+          </div>
+        </Section>
+      ) : null}
+
+      {/* 6 — Prova social */}
+      {testimonials.length ? (
+        <Section tone="cream">
+          <SectionHeading
+            eyebrow="Parceiros"
+            title="Quem confia a própria reputação à nossa"
             align="center"
           />
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {testimonials.slice(0, 3).map((item, i) => (
               <Reveal key={item.id} delay={i * 0.08}>
-                <figure className="flex h-full flex-col rounded-3xl border border-border bg-background p-8">
+                <figure className="flex h-full flex-col rounded-3xl border border-border bg-card p-8">
                   <QuoteIcon className="size-7 text-brand-yellow" />
                   <blockquote className="mt-6 flex-1 text-base leading-relaxed text-brand-purple-deep">
                     “{item.quote}”
@@ -301,10 +229,31 @@ function HomePage() {
               </Reveal>
             ))}
           </div>
+          <div className="mt-12 flex justify-center">
+            <SectionLink href="/parceiros" label="Ver cases" />
+          </div>
         </Section>
       ) : null}
 
-      {/* CTA final */}
+      {/* 7 — Produtos */}
+      <Section tone="white">
+        <div className="grid items-end gap-10 lg:grid-cols-[1.3fr_1fr]">
+          <SectionHeading
+            eyebrow={produtos?.eyebrow ?? "Produtos"}
+            title={produtos?.title ?? "Agora sim, o que servimos."}
+            description={
+              produtos?.subtitle ??
+              "Salgados fritos e assados, doces e refeições produzidos sob demanda, com ingredientes selecionados e padrão constante do primeiro ao último item."
+            }
+          />
+          <div className="flex flex-wrap gap-6 lg:justify-end">
+            <SectionLink href="/produtos" label="Ver produtos" />
+            <SectionLink href="/tabela-de-valores" label="Tabela de valores" />
+          </div>
+        </div>
+      </Section>
+
+      {/* 8 — CTA final */}
       <Section tone="yellow">
         <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           <Reveal>
@@ -314,17 +263,11 @@ function HomePage() {
             </h2>
           </Reveal>
           <Reveal delay={0.1} className="flex flex-wrap gap-4 lg:justify-end">
-            <Link
-              to="/orcamento"
-              className={buttonVariants({ variant: "primary", size: "xl" })}
-            >
+            <Link to="/orcamento" className={buttonVariants({ variant: "primary", size: "xl" })}>
               Montar meu orçamento
               <ArrowRight className="size-4" />
             </Link>
-            <Link
-              to="/contato"
-              className={buttonVariants({ variant: "outline", size: "xl" })}
-            >
+            <Link to="/contato" className={buttonVariants({ variant: "outline", size: "xl" })}>
               Falar com a equipe
             </Link>
           </Reveal>

@@ -36,10 +36,7 @@ export const NAV_PRIMARY: NavItem[] = [
     children: [
       { label: "Quem somos", to: "/quem-somos", description: "Nossa essência e posicionamento" },
       { label: "História", to: "/historia", description: "Uma trajetória iniciada em 1988" },
-      { label: "Estrutura", to: "/estrutura", description: "Capacidade produtiva e logística" },
-      { label: "Processos", to: "/processos", description: "Como garantimos consistência" },
       { label: "Parceiros", to: "/parceiros", description: "Cases com buffets e empresas" },
-      { label: "Grandes Eventos", to: "/grandes-eventos", description: "Operações de alto volume" },
     ],
   },
   { label: "Produtos", to: "/produtos" },
