@@ -96,7 +96,7 @@ function PartnerPage() {
       {media.length ? (
         <Section tone="cream">
           <div className="grid gap-6 md:grid-cols-3">
-            {media.map((item) => (
+            {media.map((item: { id: string; url: string; caption: string | null }) => (
               <img
                 key={item.id}
                 src={item.url}
@@ -111,7 +111,7 @@ function PartnerPage() {
 
       {testimonials.length ? (
         <Section tone="purple">
-          {testimonials.map((item) => (
+          {testimonials.map((item: { id: string; quote: string; author_name: string; author_role: string | null }) => (
             <figure key={item.id} className="mx-auto max-w-3xl text-center">
               <blockquote className="font-display text-2xl leading-snug text-brand-cream md:text-3xl">
                 “{item.quote}”
