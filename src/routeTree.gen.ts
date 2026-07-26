@@ -18,6 +18,7 @@ import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
 
 const QuemSomosRoute = QuemSomosRouteImport.update({
@@ -65,6 +66,11 @@ const ParceirosIndexRoute = ParceirosIndexRouteImport.update({
   path: '/parceiros/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
   id: '/parceiros/$slug',
   path: '/parceiros/$slug',
@@ -73,7 +79,7 @@ const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
@@ -81,11 +87,11 @@ export interface FileRoutesByFullPath {
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
@@ -93,12 +99,13 @@ export interface FileRoutesByTo {
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/parceiros': typeof ParceirosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
@@ -106,6 +113,7 @@ export interface FileRoutesById {
   '/historia': typeof HistoriaRoute
   '/quem-somos': typeof QuemSomosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRouteTypes {
@@ -120,11 +128,11 @@ export interface FileRouteTypes {
     | '/historia'
     | '/quem-somos'
     | '/parceiros/$slug'
+    | '/admin/'
     | '/parceiros/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/design-system'
     | '/diferenciais'
     | '/experiencia'
@@ -132,6 +140,7 @@ export interface FileRouteTypes {
     | '/historia'
     | '/quem-somos'
     | '/parceiros/$slug'
+    | '/admin'
     | '/parceiros'
   id:
     | '__root__'
@@ -144,12 +153,13 @@ export interface FileRouteTypes {
     | '/historia'
     | '/quem-somos'
     | '/parceiros/$slug'
+    | '/admin/'
     | '/parceiros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRouteRoute: typeof AdminRouteRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   DesignSystemRoute: typeof DesignSystemRoute
   DiferenciaisRoute: typeof DiferenciaisRoute
   ExperienciaRoute: typeof ExperienciaRoute
@@ -225,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParceirosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/parceiros/$slug': {
       id: '/parceiros/$slug'
       path: '/parceiros/$slug'
@@ -235,9 +252,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRouteRoute: AdminRouteRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   DesignSystemRoute: DesignSystemRoute,
   DiferenciaisRoute: DiferenciaisRoute,
   ExperienciaRoute: ExperienciaRoute,
