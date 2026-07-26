@@ -9,38 +9,188 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as QuemSomosRouteImport } from './routes/quem-somos'
+import { Route as ProcessosRouteImport } from './routes/processos'
+import { Route as HistoriaRouteImport } from './routes/historia'
+import { Route as ExperienciaRouteImport } from './routes/experiencia'
+import { Route as EstruturaRouteImport } from './routes/estrutura'
+import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
+import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
 
+const QuemSomosRoute = QuemSomosRouteImport.update({
+  id: '/quem-somos',
+  path: '/quem-somos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessosRoute = ProcessosRouteImport.update({
+  id: '/processos',
+  path: '/processos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoriaRoute = HistoriaRouteImport.update({
+  id: '/historia',
+  path: '/historia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienciaRoute = ExperienciaRouteImport.update({
+  id: '/experiencia',
+  path: '/experiencia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstruturaRoute = EstruturaRouteImport.update({
+  id: '/estrutura',
+  path: '/estrutura',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiferenciaisRoute = DiferenciaisRouteImport.update({
+  id: '/diferenciais',
+  path: '/diferenciais',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParceirosIndexRoute = ParceirosIndexRouteImport.update({
+  id: '/parceiros/',
+  path: '/parceiros/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
+  id: '/parceiros/$slug',
+  path: '/parceiros/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/diferenciais': typeof DiferenciaisRoute
+  '/estrutura': typeof EstruturaRoute
+  '/experiencia': typeof ExperienciaRoute
+  '/historia': typeof HistoriaRoute
+  '/processos': typeof ProcessosRoute
+  '/quem-somos': typeof QuemSomosRoute
+  '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/diferenciais': typeof DiferenciaisRoute
+  '/estrutura': typeof EstruturaRoute
+  '/experiencia': typeof ExperienciaRoute
+  '/historia': typeof HistoriaRoute
+  '/processos': typeof ProcessosRoute
+  '/quem-somos': typeof QuemSomosRoute
+  '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/parceiros': typeof ParceirosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/diferenciais': typeof DiferenciaisRoute
+  '/estrutura': typeof EstruturaRoute
+  '/experiencia': typeof ExperienciaRoute
+  '/historia': typeof HistoriaRoute
+  '/processos': typeof ProcessosRoute
+  '/quem-somos': typeof QuemSomosRoute
+  '/parceiros/$slug': typeof ParceirosSlugRoute
+  '/parceiros/': typeof ParceirosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/diferenciais'
+    | '/estrutura'
+    | '/experiencia'
+    | '/historia'
+    | '/processos'
+    | '/quem-somos'
+    | '/parceiros/$slug'
+    | '/parceiros/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/diferenciais'
+    | '/estrutura'
+    | '/experiencia'
+    | '/historia'
+    | '/processos'
+    | '/quem-somos'
+    | '/parceiros/$slug'
+    | '/parceiros'
+  id:
+    | '__root__'
+    | '/'
+    | '/diferenciais'
+    | '/estrutura'
+    | '/experiencia'
+    | '/historia'
+    | '/processos'
+    | '/quem-somos'
+    | '/parceiros/$slug'
+    | '/parceiros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DiferenciaisRoute: typeof DiferenciaisRoute
+  EstruturaRoute: typeof EstruturaRoute
+  ExperienciaRoute: typeof ExperienciaRoute
+  HistoriaRoute: typeof HistoriaRoute
+  ProcessosRoute: typeof ProcessosRoute
+  QuemSomosRoute: typeof QuemSomosRoute
+  ParceirosSlugRoute: typeof ParceirosSlugRoute
+  ParceirosIndexRoute: typeof ParceirosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/quem-somos': {
+      id: '/quem-somos'
+      path: '/quem-somos'
+      fullPath: '/quem-somos'
+      preLoaderRoute: typeof QuemSomosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/processos': {
+      id: '/processos'
+      path: '/processos'
+      fullPath: '/processos'
+      preLoaderRoute: typeof ProcessosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historia': {
+      id: '/historia'
+      path: '/historia'
+      fullPath: '/historia'
+      preLoaderRoute: typeof HistoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiencia': {
+      id: '/experiencia'
+      path: '/experiencia'
+      fullPath: '/experiencia'
+      preLoaderRoute: typeof ExperienciaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estrutura': {
+      id: '/estrutura'
+      path: '/estrutura'
+      fullPath: '/estrutura'
+      preLoaderRoute: typeof EstruturaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diferenciais': {
+      id: '/diferenciais'
+      path: '/diferenciais'
+      fullPath: '/diferenciais'
+      preLoaderRoute: typeof DiferenciaisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +198,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parceiros/': {
+      id: '/parceiros/'
+      path: '/parceiros'
+      fullPath: '/parceiros/'
+      preLoaderRoute: typeof ParceirosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parceiros/$slug': {
+      id: '/parceiros/$slug'
+      path: '/parceiros/$slug'
+      fullPath: '/parceiros/$slug'
+      preLoaderRoute: typeof ParceirosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DiferenciaisRoute: DiferenciaisRoute,
+  EstruturaRoute: EstruturaRoute,
+  ExperienciaRoute: ExperienciaRoute,
+  HistoriaRoute: HistoriaRoute,
+  ProcessosRoute: ProcessosRoute,
+  QuemSomosRoute: QuemSomosRoute,
+  ParceirosSlugRoute: ParceirosSlugRoute,
+  ParceirosIndexRoute: ParceirosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
