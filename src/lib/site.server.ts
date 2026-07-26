@@ -269,9 +269,38 @@ export async function loadPost(slug: string) {
   return { post, more: more ?? [] };
 }
 
+/** Slugs das tabelas de revenda exibidas publicamente na página de orçamento. */
+const RESALE_TABLES = { pacote_50: "revenda-fritos", unidade: "revenda-assados" } as const;
+
+/**
+ * Leitura controlada dos preços de revenda.
+ * As tabelas permanecem privadas (RLS intacta): a leitura acontece somente no
+ * servidor e devolve apenas o par produto → preço necessário para exibição.
+ */
+async function loadResalePrices() {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data: tables } = await supabaseAdmin
+    .from("price_tables")
+    .select("id,slug")
+    .in("slug", [RESALE_TABLES.pacote_50, RESALE_TABLES.unidade]);
+  const ids = (tables ?? []).map((t) => t.id);
+  if (!ids.length) return {} as Record<string, number>;
+
+  const { data: prices } = await supabaseAdmin
+    .from("product_prices")
+    .select("product_id,price,price_table_id")
+    .in("price_table_id", ids);
+
+  const map: Record<string, number> = {};
+  for (const row of prices ?? []) {
+    if (row.product_id && row.price != null) map[row.product_id] = Number(row.price);
+  }
+  return map;
+}
+
 export async function loadQuoteCatalog() {
   const sb = publicClient();
-  const [base, categories, products, settings] = await Promise.all([
+  const [base, categories, products, settings, resalePrices] = await Promise.all([
     loadPage("orcamento"),
     sb.from("categories").select("*").eq("is_active", true).order("display_order", ORDER),
     sb
@@ -283,6 +312,7 @@ export async function loadQuoteCatalog() {
       .eq("is_available", true)
       .order("display_order", ORDER),
     sb.from("site_settings").select("key,value").eq("key", "pedido").maybeSingle(),
+    loadResalePrices(),
   ]);
   const all = products.data ?? [];
   const raw = (settings.data?.value ?? {}) as Record<string, unknown>;
@@ -293,12 +323,14 @@ export async function loadQuoteCatalog() {
     groups: all
       .filter((p) => p.is_group)
       .map((g) => ({ ...g, flavors: all.filter((f) => f.parent_id === g.id) })),
+    prices: resalePrices,
     rules: {
       minTotalUnits: Number(raw.min_total_unidades ?? 1000),
       minPerFlavor: Number(raw.min_por_sabor ?? 200),
     },
   };
 }
+
 
 export type QuoteInput = {
   name: string;
