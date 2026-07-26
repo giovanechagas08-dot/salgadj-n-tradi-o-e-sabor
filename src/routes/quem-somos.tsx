@@ -93,15 +93,15 @@ function QuemSomosPage() {
         <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           <SectionHeading
             eyebrow="Próximo capítulo"
-            title="Uma estrutura dimensionada para não falhar."
+            title="Quem confia a própria reputação à nossa."
             invert
           />
           <div className="lg:justify-self-end">
             <Link
-              to="/estrutura"
+              to="/parceiros"
               className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-7 py-4 text-sm font-semibold text-brand-purple-deep"
             >
-              Ver nossa estrutura
+              Ver os cases
               <ArrowRight className="size-4" />
             </Link>
           </div>

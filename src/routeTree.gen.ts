@@ -10,11 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as QuemSomosRouteImport } from './routes/quem-somos'
-import { Route as ProcessosRouteImport } from './routes/processos'
 import { Route as HistoriaRouteImport } from './routes/historia'
 import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
-import { Route as EstruturaRouteImport } from './routes/estrutura'
 import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,11 +22,6 @@ import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
 const QuemSomosRoute = QuemSomosRouteImport.update({
   id: '/quem-somos',
   path: '/quem-somos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProcessosRoute = ProcessosRouteImport.update({
-  id: '/processos',
-  path: '/processos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoriaRoute = HistoriaRouteImport.update({
@@ -44,11 +37,6 @@ const GaleriaRoute = GaleriaRouteImport.update({
 const ExperienciaRoute = ExperienciaRouteImport.update({
   id: '/experiencia',
   path: '/experiencia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EstruturaRoute = EstruturaRouteImport.update({
-  id: '/estrutura',
-  path: '/estrutura',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiferenciaisRoute = DiferenciaisRouteImport.update({
@@ -81,11 +69,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
-  '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
-  '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/parceiros/': typeof ParceirosIndexRoute
@@ -94,11 +80,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
-  '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
-  '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/parceiros': typeof ParceirosIndexRoute
@@ -108,11 +92,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
-  '/estrutura': typeof EstruturaRoute
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
-  '/processos': typeof ProcessosRoute
   '/quem-somos': typeof QuemSomosRoute
   '/parceiros/$slug': typeof ParceirosSlugRoute
   '/parceiros/': typeof ParceirosIndexRoute
@@ -123,11 +105,9 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/diferenciais'
-    | '/estrutura'
     | '/experiencia'
     | '/galeria'
     | '/historia'
-    | '/processos'
     | '/quem-somos'
     | '/parceiros/$slug'
     | '/parceiros/'
@@ -136,11 +116,9 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/diferenciais'
-    | '/estrutura'
     | '/experiencia'
     | '/galeria'
     | '/historia'
-    | '/processos'
     | '/quem-somos'
     | '/parceiros/$slug'
     | '/parceiros'
@@ -149,11 +127,9 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/diferenciais'
-    | '/estrutura'
     | '/experiencia'
     | '/galeria'
     | '/historia'
-    | '/processos'
     | '/quem-somos'
     | '/parceiros/$slug'
     | '/parceiros/'
@@ -163,11 +139,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignSystemRoute: typeof DesignSystemRoute
   DiferenciaisRoute: typeof DiferenciaisRoute
-  EstruturaRoute: typeof EstruturaRoute
   ExperienciaRoute: typeof ExperienciaRoute
   GaleriaRoute: typeof GaleriaRoute
   HistoriaRoute: typeof HistoriaRoute
-  ProcessosRoute: typeof ProcessosRoute
   QuemSomosRoute: typeof QuemSomosRoute
   ParceirosSlugRoute: typeof ParceirosSlugRoute
   ParceirosIndexRoute: typeof ParceirosIndexRoute
@@ -180,13 +154,6 @@ declare module '@tanstack/react-router' {
       path: '/quem-somos'
       fullPath: '/quem-somos'
       preLoaderRoute: typeof QuemSomosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/processos': {
-      id: '/processos'
-      path: '/processos'
-      fullPath: '/processos'
-      preLoaderRoute: typeof ProcessosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historia': {
@@ -208,13 +175,6 @@ declare module '@tanstack/react-router' {
       path: '/experiencia'
       fullPath: '/experiencia'
       preLoaderRoute: typeof ExperienciaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/estrutura': {
-      id: '/estrutura'
-      path: '/estrutura'
-      fullPath: '/estrutura'
-      preLoaderRoute: typeof EstruturaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/diferenciais': {
@@ -259,11 +219,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignSystemRoute: DesignSystemRoute,
   DiferenciaisRoute: DiferenciaisRoute,
-  EstruturaRoute: EstruturaRoute,
   ExperienciaRoute: ExperienciaRoute,
   GaleriaRoute: GaleriaRoute,
   HistoriaRoute: HistoriaRoute,
-  ProcessosRoute: ProcessosRoute,
   QuemSomosRoute: QuemSomosRoute,
   ParceirosSlugRoute: ParceirosSlugRoute,
   ParceirosIndexRoute: ParceirosIndexRoute,
