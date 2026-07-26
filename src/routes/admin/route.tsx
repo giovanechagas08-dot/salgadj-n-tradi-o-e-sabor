@@ -39,10 +39,20 @@ const NAV = [
 ];
 
 function AdminLayout() {
-  const { user, canEdit } = Route.useRouteContext();
+  const { user, canEdit, isLogin } = Route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  if (isLogin || !user) {
+    return (
+      <>
+        <Outlet />
+        <Toaster />
+      </>
+    );
+  }
+
 
   async function signOut() {
     await queryClient.cancelQueries();
