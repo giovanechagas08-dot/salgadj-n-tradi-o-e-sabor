@@ -21,14 +21,25 @@ export function whatsappLink(message: string, number = BRAND.whatsapp) {
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
-export const NAV = [
-  { label: "A Salgadjén", to: "/quem-somos" as const },
-  { label: "História", to: "/historia" as const },
-  { label: "Estrutura", to: "/estrutura" as const },
-  { label: "Processos", to: "/processos" as const },
-  { label: "Parceiros", to: "/parceiros" as const },
-  { label: "Grandes Eventos", to: "/grandes-eventos" as const },
+export const NAV_PRIMARY = [
+  {
+    label: "A Salgadjén",
+    to: "/quem-somos" as const,
+    children: [
+      { label: "Quem somos", to: "/quem-somos" as const, description: "Nossa essência e posicionamento" },
+      { label: "História", to: "/historia" as const, description: "Uma trajetória iniciada em 1988" },
+      { label: "Estrutura", to: "/estrutura" as const, description: "Capacidade produtiva e logística" },
+      { label: "Processos", to: "/processos" as const, description: "Como garantimos consistência" },
+      { label: "Parceiros", to: "/parceiros" as const, description: "Cases com buffets e empresas" },
+      { label: "Grandes Eventos", to: "/grandes-eventos" as const, description: "Operações de alto volume" },
+    ],
+  },
   { label: "Produtos", to: "/produtos" as const },
   { label: "Galeria", to: "/galeria" as const },
   { label: "Conteúdos", to: "/conteudos" as const },
 ];
+
+export const NAV = NAV_PRIMARY.flatMap((item) =>
+  "children" in item && item.children ? item.children : [{ label: item.label, to: item.to }],
+);
+
