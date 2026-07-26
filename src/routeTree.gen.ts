@@ -15,6 +15,7 @@ import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
 import { Route as DiferenciaisRouteImport } from './routes/diferenciais'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParceirosIndexRouteImport } from './routes/parceiros.index'
 import { Route as ParceirosSlugRouteImport } from './routes/parceiros.$slug'
@@ -49,6 +50,11 @@ const DesignSystemRoute = DesignSystemRouteImport.update({
   path: '/design-system',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -67,6 +73,7 @@ const ParceirosSlugRoute = ParceirosSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRoute
   '/design-system': typeof DesignSystemRoute
   '/diferenciais': typeof DiferenciaisRoute
   '/experiencia': typeof ExperienciaRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/design-system'
     | '/diferenciais'
     | '/experiencia'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/design-system'
     | '/diferenciais'
     | '/experiencia'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/design-system'
     | '/diferenciais'
     | '/experiencia'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRoute
   DesignSystemRoute: typeof DesignSystemRoute
   DiferenciaisRoute: typeof DiferenciaisRoute
   ExperienciaRoute: typeof ExperienciaRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -217,6 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRoute,
   DesignSystemRoute: DesignSystemRoute,
   DiferenciaisRoute: DiferenciaisRoute,
   ExperienciaRoute: ExperienciaRoute,
