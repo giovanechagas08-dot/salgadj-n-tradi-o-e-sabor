@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as QuemSomosRouteImport } from './routes/quem-somos'
+import { Route as OrcamentoRouteImport } from './routes/orcamento'
 import { Route as HistoriaRouteImport } from './routes/historia'
 import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as ExperienciaRouteImport } from './routes/experiencia'
@@ -26,6 +27,11 @@ import { Route as AdminLoginRouteImport } from './routes/admin/login'
 const QuemSomosRoute = QuemSomosRouteImport.update({
   id: '/quem-somos',
   path: '/quem-somos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrcamentoRoute = OrcamentoRouteImport.update({
+  id: '/orcamento',
+  path: '/orcamento',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoriaRoute = HistoriaRouteImport.update({
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
+  '/orcamento': typeof OrcamentoRoute
   '/quem-somos': typeof QuemSomosRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/precos': typeof AdminPrecosRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
+  '/orcamento': typeof OrcamentoRoute
   '/quem-somos': typeof QuemSomosRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/precos': typeof AdminPrecosRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/experiencia': typeof ExperienciaRoute
   '/galeria': typeof GaleriaRoute
   '/historia': typeof HistoriaRoute
+  '/orcamento': typeof OrcamentoRoute
   '/quem-somos': typeof QuemSomosRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/precos': typeof AdminPrecosRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/experiencia'
     | '/galeria'
     | '/historia'
+    | '/orcamento'
     | '/quem-somos'
     | '/admin/login'
     | '/admin/precos'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/experiencia'
     | '/galeria'
     | '/historia'
+    | '/orcamento'
     | '/quem-somos'
     | '/admin/login'
     | '/admin/precos'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/experiencia'
     | '/galeria'
     | '/historia'
+    | '/orcamento'
     | '/quem-somos'
     | '/admin/login'
     | '/admin/precos'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   ExperienciaRoute: typeof ExperienciaRoute
   GaleriaRoute: typeof GaleriaRoute
   HistoriaRoute: typeof HistoriaRoute
+  OrcamentoRoute: typeof OrcamentoRoute
   QuemSomosRoute: typeof QuemSomosRoute
   ParceirosSlugRoute: typeof ParceirosSlugRoute
   ParceirosIndexRoute: typeof ParceirosIndexRoute
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/quem-somos'
       fullPath: '/quem-somos'
       preLoaderRoute: typeof QuemSomosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orcamento': {
+      id: '/orcamento'
+      path: '/orcamento'
+      fullPath: '/orcamento'
+      preLoaderRoute: typeof OrcamentoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historia': {
@@ -314,6 +334,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperienciaRoute: ExperienciaRoute,
   GaleriaRoute: GaleriaRoute,
   HistoriaRoute: HistoriaRoute,
+  OrcamentoRoute: OrcamentoRoute,
   QuemSomosRoute: QuemSomosRoute,
   ParceirosSlugRoute: ParceirosSlugRoute,
   ParceirosIndexRoute: ParceirosIndexRoute,
