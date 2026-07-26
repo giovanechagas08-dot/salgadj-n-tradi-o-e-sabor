@@ -755,6 +755,41 @@ export type Database = {
           },
         ]
       }
+      price_table_access: {
+        Row: {
+          created_at: string
+          granted_by: string | null
+          id: string
+          price_table_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          price_table_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          price_table_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "price_table_access_price_table_id_fkey"
+            columns: ["price_table_id"]
+            isOneToOne: false
+            referencedRelation: "price_tables"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       price_tables: {
         Row: {
           audience: string
@@ -1361,6 +1396,14 @@ export type Database = {
     }
     Functions: {
       can_edit: { Args: { _user_id: string }; Returns: boolean }
+      can_view_price_table: {
+        Args: { _table_id: string; _user_id: string }
+        Returns: boolean
+      }
+      has_price_table_grant: {
+        Args: { _table_id: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1368,6 +1411,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
+      submit_quote: { Args: { _items: Json; _quote: Json }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "editor" | "viewer"
